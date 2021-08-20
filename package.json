@@ -1,14 +1,39 @@
 {
   "name": "img-mage",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "author": "Ray Yam",
+  "contributors": [
+    "Ray Yam"
+  ],
+  "description": "A node.js image processing library",
+  "keywords": [
+    "Image",
+    "Pixel",
+    "Image Processing",
+    "Computer Vision",
+    "Resize",
+    "Scaling",
+    "Crop",
+    "Rotate",
+    "Blur",
+    "Fourier Transform",
+    "Filter",
+    "Kernel",
+    "Convolution",
+    "Corner Detection",
+    "Edge Detection"
+  ],
+  "homepage": "https://github.com/rayyamhk/img-mage.js",
+  "bugs": {
+    "url": "https://github.com/rayyamhk/img-mage.js/issues"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rayyamhk/img-mage.js"
+  },
+  "license": "MIT",
+  "main": "src/index.js",
+  "scripts": {},
   "dependencies": {
     "@rayyamhk/matrix": "1.0.7",
     "jpeg-js": "0.4.3"
