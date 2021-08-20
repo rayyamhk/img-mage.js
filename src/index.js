@@ -79,3 +79,23 @@ module.exports = Image;
 
 Image.prototype.rotate = require('./core/rotate');
 Image.prototype.crop = require('./core/crop');
+
+Image.prototype.reflectX = require('./core/reflectX');
+Image.prototype.reflectY = require('./core/reflectY');
+// Image.prototype.scale = require('./core/scale');
+// Image.prototype.negative = require('./core/negative');
+// Image.prototype.blur = require('./core/blur');
+// Image.prototype.sharpen = require('./core/sharpen');
+// Image.prototype.denoising = require('./core/denoising');
+// Image.prototype.logTransform = require('./core/logTransform');
+// Image.prototype.powerTransform = require('./core/powerTransform');
+
+// Image.prototype.pad = require('./core/pad');
+// Image.prototype.convolve = require('./core/convolve');
+// Image.prototype.correlate = require('./core/correlate');
+// Image.prototype.pixelwise = require('./core/pixelwise');
+
+// Image.prototype.detectEdges = require('./core/detectEdges');
+// Image.prototype.detectCorners = require('./core/detectCorners');
+// Image.prototype.fourier = require('./core/fourier');
+// Image.prototype.inverseFourier = require('./core/inverseFourier');
