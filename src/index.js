@@ -11,7 +11,6 @@ class Image {
     this.B = null;
     this.width = 0;
     this.height = 0;
-    return;
   }
 
   fromSource(path) {
@@ -29,15 +28,6 @@ class Image {
       B.push(data[i + 2]);
     }
 
-    this.width = width;
-    this.height = height;
-    this.R = Matrix.fromArray(R, height, width);
-    this.G = Matrix.fromArray(G, height, width);
-    this.B = Matrix.fromArray(B, height, width);
-    return this;
-  }
-
-  fromRGB(R, G, B, width, height) {
     this.width = width;
     this.height = height;
     this.R = Matrix.fromArray(R, height, width);
@@ -88,3 +78,4 @@ class Image {
 module.exports = Image;
 
 Image.prototype.rotate = require('./core/rotate');
+Image.prototype.crop = require('./core/crop');
