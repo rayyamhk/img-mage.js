@@ -2,7 +2,7 @@ const Matrix = require('@rayyamhk/matrix');
 const Image = require('../index');
 const {
   invalid_index,
-  invalid_int,
+  expect_nonnegative,
   OVERFLOW_WIDTH,
   OVERFLOW_HEIGHT
 } = require('../Errors');
@@ -20,7 +20,7 @@ function crop(x, y, w, h) {
   }
 
   if (typeof w !== 'number' || !Number.isInteger(w) || w < 0) {
-    throw invalid_int(w);
+    throw expect_nonnegative(w);
   }
 
   if (y + w > width) {
@@ -28,7 +28,7 @@ function crop(x, y, w, h) {
   }
   
   if (typeof h !== 'number' || !Number.isInteger(h) || h < 0) {
-    throw invalid_int(h);
+    throw expect_nonnegative(h);
   }
 
   if (x + h > height) {

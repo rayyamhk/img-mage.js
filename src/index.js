@@ -90,8 +90,7 @@ Image.prototype.negative = require('./core/negative');
 // Image.prototype.blur = require('./core/blur');
 // Image.prototype.sharpen = require('./core/sharpen');
 // Image.prototype.denoising = require('./core/denoising');
-// Image.prototype.logTransform = require('./core/logTransform');
-// Image.prototype.powerTransform = require('./core/powerTransform');
+Image.prototype.powerLawTransform = require('./core/powerLawTransform');
 
 Image.prototype.pad = require('./core/pad');
 // Image.prototype.convolve = require('./core/convolve');

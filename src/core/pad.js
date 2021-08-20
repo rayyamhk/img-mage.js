@@ -1,14 +1,14 @@
 const Matrix = require('@rayyamhk/matrix');
 const Image = require('../index');
-const { invalid_int } = require('../Errors');
+const { expect_nonnegative } = require('../Errors');
 
 function pad(sizeX, sizeY) {
   if ((!sizeX && sizeX !== 0) || typeof sizeX !== 'number' || !Number.isInteger(sizeX) || sizeX < 0) {
-    throw invalid_int(sizeX);
+    throw expect_nonnegative(sizeX);
   }
 
   if (sizeY && (typeof sizeY !== 'number' || !Number.isInteger(sizeY) || sizeY < 0)) {
-    throw invalid_int(sizeY);
+    throw expect_nonnegative(sizeY);
   }
 
   if (!sizeY) {
