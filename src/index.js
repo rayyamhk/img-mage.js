@@ -93,7 +93,7 @@ Image.prototype.negative = require('./core/negative');
 // Image.prototype.logTransform = require('./core/logTransform');
 // Image.prototype.powerTransform = require('./core/powerTransform');
 
-// Image.prototype.pad = require('./core/pad');
+Image.prototype.pad = require('./core/pad');
 // Image.prototype.convolve = require('./core/convolve');
 // Image.prototype.correlate = require('./core/correlate');
 // Image.prototype.pixelwise = require('./core/pixelwise');
