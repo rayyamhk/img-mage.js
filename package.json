@@ -1,0 +1,16 @@
+{
+  "name": "img-mage",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@rayyamhk/matrix": "1.0.7",
+    "jpeg-js": "0.4.3"
+  }
+}
