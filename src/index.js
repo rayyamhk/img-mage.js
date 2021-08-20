@@ -11,6 +11,7 @@ class Image {
     this.B = null;
     this.width = 0;
     this.height = 0;
+    this.bitDepth = 0;
   }
 
   fromSource(path) {
@@ -30,6 +31,7 @@ class Image {
 
     this.width = width;
     this.height = height;
+    this.bitDepth = 8; // jpg
     this.R = Matrix.fromArray(R, height, width);
     this.G = Matrix.fromArray(G, height, width);
     this.B = Matrix.fromArray(B, height, width);
@@ -71,6 +73,7 @@ class Image {
     this.B = B;
     this.width = width;
     this.height = height;
+    this.bitDepth = 8;
     return this;
   }
 }
@@ -83,7 +86,7 @@ Image.prototype.crop = require('./core/crop');
 Image.prototype.reflectX = require('./core/reflectX');
 Image.prototype.reflectY = require('./core/reflectY');
 // Image.prototype.scale = require('./core/scale');
-// Image.prototype.negative = require('./core/negative');
+Image.prototype.negative = require('./core/negative');
 // Image.prototype.blur = require('./core/blur');
 // Image.prototype.sharpen = require('./core/sharpen');
 // Image.prototype.denoising = require('./core/denoising');
