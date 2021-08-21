@@ -1,15 +1,16 @@
 const Matrix = require('@rayyamhk/matrix');
-const Image = require('../index');
 
 function negative() {
-  const width = this.width;
   const height = this.height;
+  const width = this.width;
   const maxIntensity = 2 ** this.bitDepth - 1;
+  const cb = (channel) => Matrix.generate(height, width, (i, j) => maxIntensity - channel._matrix[i][j]);
 
-  const R = Matrix.generate(height, width, (i, j) => maxIntensity - this.R._matrix[i][j]);
-  const G = Matrix.generate(height, width, (i, j) => maxIntensity - this.G._matrix[i][j]);
-  const B = Matrix.generate(height, width, (i, j) => maxIntensity - this.B._matrix[i][j]);
-  return new Image()._fromRGB(R, G, B, width, height);
+  if (this.channels.length === 4) {
+    return this.map(cb, 0, 1, 2);
+  }
+  
+  return this.map(cb);
 }
 
 module.exports = negative;
