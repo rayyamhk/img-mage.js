@@ -10,6 +10,10 @@ class Image {
     this.saver = null;
   }
 
+  size() {
+    return [this.width, this.height];
+  }
+
   fromSource(path, option) {
     const [loader, saver] = getImageLoader(path);
     this.saver = saver;
@@ -72,13 +76,13 @@ Image.prototype.rotate = require('./core/transformations/rotate');
 
 // enhancement
 Image.prototype.blur = require('./core/enhancements/blur');
-// Image.prototype.sharpen = require('./core/enhancements/sharpen');
+Image.prototype.sharpen = require('./core/enhancements/sharpen');
 
 // restoration
 // Image.prototype.denoising = require('./core/denoising');
 
 // operations
-Image.property.add = require('./core/operations/add');
+Image.prototype.add = require('./core/operations/add');
 Image.prototype.convolve1D = require('./core/operations/convolve1D');
 Image.prototype.convolve2D = require('./core/operations/convolve2D');
 // Image.prototype.fourier = require('./core/fourier');

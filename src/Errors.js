@@ -13,6 +13,8 @@ module.exports = {
   invalid_kernel_size: (row, col) => new RangeError(`${row + col ? ' and ' + col : ''} is not a valid kenerl size, expected a positive odd number dimension smaller than the shorter side of the image.`),
   invalid_kernel: (arg) => new TypeError(`Expect instance of Matrix but received ${arg}.`),
   invalid_argument: (argName, expected, received) => new TypeError(`Invalid argument ${argName}. Expected ${expected} but ${received} is received.`),
+  size_incompatible: (rw, rh, ew, eh) => new RangeError(`Received incompatible size, received ${rw} ${rh} but ${ew} ${eh} are expected.`),
 
+  INVALID_IMAGE: new TypeError('Received Invalid Image'),
   INVALID_RGB: new TypeError('Expect RGB image.'),
 }

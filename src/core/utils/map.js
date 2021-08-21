@@ -1,6 +1,7 @@
 const Image = require('../../index');
 const { invalid_channels, invalid_dimensions } = require('../../Errors');
 
+// cb takes a channel and its index as input and returns a processed channel
 function map(cb, ...channels) {
   if (channels.length > 4) {
     throw invalid_channels(channels);
@@ -28,7 +29,7 @@ function map(cb, ...channels) {
   for (let k = 0; k < this.channels.length; k++) {
     if (channels.includes(k)) {
       const channel = this.channels[k];
-      const newChannel = cb(channel);
+      const newChannel = cb(channel, k);
 
       // dimensions checking
       const [row, col] = newChannel.size();
