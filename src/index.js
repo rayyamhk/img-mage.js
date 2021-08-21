@@ -9,7 +9,7 @@ class Image {
     this.saver = null;
   }
 
-  fromSource(path) {
+  fromSource(path, option) {
     const [loader, saver] = getImageLoader(path);
     this.saver = saver;
 
@@ -20,10 +20,15 @@ class Image {
       channels,
     } = loader(path);
 
+    const {
+      ignoreAlpha = true,
+    } = option || {};
+
     this.width = width;
     this.height = height;
     this.bitDepth = bitDepth;
     this.channels = channels;
+    this.ignoreAlpha = ignoreAlpha;
 
     return this;
   }
@@ -45,6 +50,10 @@ class Image {
 
 module.exports = Image;
 
+Image.prototype.RGBtoYIQ = require('./core/RGBtoYIQ');
+Image.prototype.YIQtoRGB = require('./core/YIQtoRGB');
+Image.prototype.clip = require('./core/clip');
+
 Image.prototype.rotate = require('./core/rotate');
 Image.prototype.crop = require('./core/crop');
 
@@ -58,7 +67,7 @@ Image.prototype.negative = require('./core/negative');
 Image.prototype.powerLawTransform = require('./core/powerLawTransform');
 
 Image.prototype.pad = require('./core/pad');
-// Image.prototype.convolve = require('./core/convolve');
+Image.prototype.convolve = require('./core/convolve');
 // Image.prototype.correlate = require('./core/correlate');
 Image.prototype.map = require('./core/map');
 

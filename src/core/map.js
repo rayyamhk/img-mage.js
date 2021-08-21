@@ -7,6 +7,10 @@ function map(cb, ...channels) {
   }
 
   if (channels.length === 0) {
+    let length = this.channels.length;
+    if (length === 4 && this.ignoreAlpha) {
+      length = 3;
+    }
     channels = [...new Array(this.channels.length).keys()];
   }
 

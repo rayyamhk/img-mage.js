@@ -1,7 +1,7 @@
 const Matrix = require('@rayyamhk/matrix');
 const { expect_positive } = require('../Errors');
 
-function powerLawTransform(gamma) {
+function powerLawTransform(gamma, ...channels) {
   if (!gamma || typeof gamma !== 'number' || gamma <= 0) {
     throw expect_positive(gamma);
   }
@@ -16,7 +16,7 @@ function powerLawTransform(gamma) {
     return this.map(cb, 0, 1, 2);
   }
 
-  return this.map(cb);
+  return this.map(cb, ...channels);
 }
 
 module.exports = powerLawTransform;

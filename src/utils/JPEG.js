@@ -9,39 +9,36 @@ function loadJPEG(path) {
     width,
     height,
     data,
-  } = jpeg.decode(buffer, { useTArray: true });
+  } = jpeg.decode(buffer, { useTArray: true, formatAsRGBA: false });
 
-  let R = [], G = [], B = [], A = [];
-  for (let i = 0; i < data.length; i += 4) {
+  let R = [], G = [], B = [];
+  for (let i = 0; i < data.length; i += 3) {
     R.push(data[i]);
     G.push(data[i + 1]);
     B.push(data[i + 2]);
-    A.push(data[i + 3]);
   }
 
   R = Matrix.fromArray(R, height, width);
   G = Matrix.fromArray(G, height, width);
   B = Matrix.fromArray(B, height, width);
-  A = Matrix.fromArray(A, height, width);
 
   return {
     bitDepth: 8,
     width,
     height,
-    channels: [R, G, B, A],
+    channels: [R, G, B],
   };
 }
 
 function saveJPEG(path, channels, width, height) {
-  let [R, G, B, A] = channels;
-  if (!R || !G || !B || !A) {
+  let [R, G, B] = channels;
+  if (!R || !G || !B) {
     throw INVALID_IMAGE;
   }
 
   R = R.flatten();
   G = G.flatten();
   B = B.flatten();
-  A = A.flatten();
 
   const length = width * height * 4;
   const buffer = Buffer.alloc(length);
@@ -50,7 +47,7 @@ function saveJPEG(path, channels, width, height) {
     buffer[i] = R[count];
     buffer[i + 1] = G[count];
     buffer[i + 2] = B[count];
-    buffer[i + 3] = A[count];
+    buffer[i + 4] = 0;
     count += 1;
   }
 
