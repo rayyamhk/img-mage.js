@@ -1,7 +1,7 @@
 const Matrix = require('@rayyamhk/matrix');
 const { invalid_kernel_size, invalid_kernel } = require('../Errors');
 
-function convolve(kernel, ...channels) {
+function convolve2D(kernel, ...channels) {
   if (!(kernel instanceof Matrix)) {
     throw invalid_kernel(kernel);
   }
@@ -43,4 +43,4 @@ function convolve(kernel, ...channels) {
   return this.map(cb, ...channels);
 }
 
-module.exports = convolve;
+module.exports = convolve2D;

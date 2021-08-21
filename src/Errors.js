@@ -10,8 +10,9 @@ module.exports = {
   invalid_dimensions: (received, expected) => new RangeError(`Expect dimension ${expected} but ${received} is receievd.`),
   expect_nonnegative: (number) => new RangeError(`${number} is not a non-negative integer.`),
   expect_positive: (number) => new RangeError(`${number} is not a positive number.`),
-  invalid_kernel_size: (row, col) => new RangeError(`${row + col ? ' and ' + col : ''} is not a valid kenerl size, expected a square with positive odd number dimensions smaller than the shorter side of the image.`),
+  invalid_kernel_size: (row, col) => new RangeError(`${row + col ? ' and ' + col : ''} is not a valid kenerl size, expected a positive odd number dimension smaller than the shorter side of the image.`),
   invalid_kernel: (arg) => new TypeError(`Expect instance of Matrix but received ${arg}.`),
+  invalid_argument: (argName, expected, received) => new TypeError(`Invalid argument ${argName}. Expected ${expected} but ${received} is received.`),
 
   INVALID_RGB: new TypeError('Expect RGB image.'),
 }

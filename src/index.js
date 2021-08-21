@@ -61,15 +61,17 @@ Image.prototype.reflectX = require('./core/reflectX');
 Image.prototype.reflectY = require('./core/reflectY');
 // Image.prototype.scale = require('./core/scale');
 Image.prototype.negative = require('./core/negative');
-// Image.prototype.blur = require('./core/blur');
+Image.prototype.blur = require('./core/blur');
 // Image.prototype.sharpen = require('./core/sharpen');
 // Image.prototype.denoising = require('./core/denoising');
 Image.prototype.powerLawTransform = require('./core/powerLawTransform');
 
 Image.prototype.pad = require('./core/pad');
-Image.prototype.convolve = require('./core/convolve');
-// Image.prototype.correlate = require('./core/correlate');
+Image.prototype.convolve2D = require('./core/convolve2D');
+Image.prototype.convolve1D = require('./core/convolve1D');
 Image.prototype.map = require('./core/map');
+
+Image.kernel = require('./core/kernel');
 
 // Image.prototype.detectEdges = require('./core/detectEdges');
 // Image.prototype.detectCorners = require('./core/detectCorners');
