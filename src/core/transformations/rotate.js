@@ -1,5 +1,5 @@
 const Matrix = require('@rayyamhk/matrix');
-const { invalid_rotation } = require('../Errors');
+const { invalid_rotation } = require('../../Errors');
 
 function rotate(rotation) {
   if (![-3, -2, -1, 1, 2, 3].includes(rotation)) {

@@ -2,7 +2,7 @@ const Matrix = require('@rayyamhk/matrix');
 const {
   invalid_index,
   expect_nonnegative,
-} = require('../Errors');
+} = require('../../Errors');
 
 function crop(x, y, w, h) {
   const width = this.width;

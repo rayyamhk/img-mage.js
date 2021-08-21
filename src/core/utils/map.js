@@ -1,5 +1,5 @@
-const Image = require('../index');
-const { invalid_channels, invalid_dimensions } = require('../Errors');
+const Image = require('../../index');
+const { invalid_channels, invalid_dimensions } = require('../../Errors');
 
 function map(cb, ...channels) {
   if (channels.length > 4) {

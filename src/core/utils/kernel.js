@@ -1,7 +1,7 @@
 const Matrix = require('@rayyamhk/matrix');
-const constant = require('./constant');
+const constant = require('../constant');
 
-function filter(type, ...options) {
+function kernel(type, ...options) {
   switch(type) {
     case constant.BOX_FILTER: {
       const size = options[0] || 3;
@@ -33,7 +33,7 @@ function filter(type, ...options) {
   }   
 }
 
-module.exports = filter;
+module.exports = kernel;
 
 function gaussianFilter1D(sigma) {
   const temp = Math.pow(Math.log(1/1000)*-2*sigma*sigma, 0.5);

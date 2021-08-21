@@ -1,5 +1,5 @@
 const Matrix = require('@rayyamhk/matrix');
-const { expect_nonnegative } = require('../Errors');
+const { expect_nonnegative } = require('../../Errors');
 
 function pad(sizeX, sizeY) {
   if ((!sizeX && sizeX !== 0) || typeof sizeX !== 'number' || !Number.isInteger(sizeX) || sizeX < 0) {

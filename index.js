@@ -1,6 +1,6 @@
 const Matrix = require('@rayyamhk/matrix');
 const Image = require('./src/index');
-const { GAUSSIAN_1D, GAUSSIAN_2D, LAPLACIAN_45, LAPLACIAN_90 } = require('./src/core/constant');
+const { GAUSSIAN_1D, GAUSSIAN_2D, LAPLACIAN_45, LAPLACIAN_90 } = Image.CONSTANT;
 
 const Gaussian1D = Image.kernel(GAUSSIAN_1D, 10);
 const Gaussian2D = Image.kernel(GAUSSIAN_2D, 4);

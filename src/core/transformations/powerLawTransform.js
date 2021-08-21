@@ -1,5 +1,5 @@
 const Matrix = require('@rayyamhk/matrix');
-const { expect_positive } = require('../Errors');
+const { expect_positive } = require('../../Errors');
 
 function powerLawTransform(gamma, ...channels) {
   if (!gamma || typeof gamma !== 'number' || gamma <= 0) {

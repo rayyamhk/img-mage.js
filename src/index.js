@@ -1,4 +1,5 @@
 const getImageLoader = require('./utils/getImageLoader');
+const constant = require('./core/constant');
 
 class Image {
   constructor() {
@@ -50,33 +51,44 @@ class Image {
 
 module.exports = Image;
 
-Image.prototype.RGBtoYIQ = require('./core/RGBtoYIQ');
-Image.prototype.YIQtoRGB = require('./core/YIQtoRGB');
-Image.prototype.clip = require('./core/clip');
-
-Image.prototype.rotate = require('./core/rotate');
-Image.prototype.crop = require('./core/crop');
-
-Image.prototype.reflectX = require('./core/reflectX');
-Image.prototype.reflectY = require('./core/reflectY');
-// Image.prototype.scale = require('./core/scale');
-Image.prototype.negative = require('./core/negative');
-Image.prototype.blur = require('./core/blur');
-// Image.prototype.sharpen = require('./core/sharpen');
-// Image.prototype.denoising = require('./core/denoising');
-Image.prototype.powerLawTransform = require('./core/powerLawTransform');
-
-Image.prototype.pad = require('./core/pad');
-Image.prototype.convolve2D = require('./core/convolve2D');
-Image.prototype.convolve1D = require('./core/convolve1D');
-Image.prototype.map = require('./core/map');
-
-Image.kernel = require('./core/kernel');
-
-// Image.prototype.detectEdges = require('./core/detectEdges');
+// utils
+Image.prototype.clip = require('./core/utils/clip');
 // Image.prototype.detectCorners = require('./core/detectCorners');
+// Image.prototype.detectEdges = require('./core/detectEdges');
+Image.kernel = require('./core/utils/kernel');
+Image.prototype.map = require('./core/utils/map');
+Image.prototype.RGBtoYIQ = require('./core/utils/RGBtoYIQ');
+Image.prototype.YIQtoRGB = require('./core/utils/YIQtoRGB');
+
+// transformations
+Image.prototype.crop = require('./core/transformations/crop');
+Image.prototype.negative = require('./core/transformations/negative');
+Image.prototype.pad = require('./core/transformations/pad');
+Image.prototype.powerLawTransform = require('./core/transformations/powerLawTransform');
+Image.prototype.reflectX = require('./core/transformations/reflectX');
+Image.prototype.reflectY = require('./core/transformations/reflectY');
+Image.prototype.rotate = require('./core/transformations/rotate');
+// Image.prototype.scale = require('./core/transformations/scale');
+
+// enhancement
+Image.prototype.blur = require('./core/enhancements/blur');
+// Image.prototype.sharpen = require('./core/enhancements/sharpen');
+
+// restoration
+// Image.prototype.denoising = require('./core/denoising');
+
+// operations
+Image.property.add = require('./core/operations/add');
+Image.prototype.convolve1D = require('./core/operations/convolve1D');
+Image.prototype.convolve2D = require('./core/operations/convolve2D');
 // Image.prototype.fourier = require('./core/fourier');
 // Image.prototype.inverseFourier = require('./core/inverseFourier');
 
+// constants
+Image.CONSTANT = constant;
+
+
+
+
+
 // Image.property.addNoise = require('./core/addNoise);
-// Image.property.add = require()
