@@ -1,38 +1,37 @@
-const Matrix = require('@rayyamhk/matrix');
-const { invalid_coordinate, invalid_pixel, INVALID_ARRAY } = require('../../Errors');
+const Image = require('../../Image');
+const isValidChannels = require('../../utils/isValidChannels');
+const { invalid_coordinate, INVALID_ARRAY } = require('../../Errors');
 
-function plot(points, pixel, ...channels) {
+function plot(points, ...channels) {
   if (!points || !Array.isArray(points)) {
     throw INVALID_ARRAY;
   }
 
-  if (!pixel) {
-    pixel = getRandomPixel(this.channels.length, 2 ** this.bitDepth - 1);
-  } else if (!Array.isArray(pixel) || pixel.length !== this.channels.length) {
-    throw invalid_pixel(pixel);
-  }
-
-  for (let i = 0; i < points.length; i++) {
-    if (!Array.isArray(points[i]) || points[i].length !== 2) {
+  for (let k = 0; k < points.length; k++) {
+    if (!Array.isArray(points[k]) || points[k].length !== 2) {
       throw invalid_coordinate(point);
     }
   }
 
+  channels = isValidChannels(channels, this.channels.length);
+
+  const pixel = getRandomPixel(this.channels.length, 2 ** this.bitDepth - 1);
   const w = this.width;
   const h = this.height;
 
-  const cb = (channel, i) => {
-    const intensity = pixel[i];
-    channel = Matrix.clone(channel);
-
-    points.forEach((point) => {
-      drawCross(channel, intensity, point, w, h);
-    });
-
-    return channel;
+  const newChannels = [];
+  for (let k = 0; k < this.channels.length; k++) {
+    let channel = this.channels[k];
+    if (channels.includes(k)) {
+      channel = clone(channel);
+      points.forEach((p) => {
+        drawCross(channel, pixel[k], p, w, h);
+      });
+    }
+    newChannels.push(channel);
   }
 
-  return this.map(cb, ...channels);
+  return new Image()._fromChannels(newChannels, w, h, this);
 }
 
 function getRandomPixel(channelsNum, maxIntensity) {
@@ -49,13 +48,21 @@ function drawCross(channel, intensity, point, width, height) {
   x = Math.round(x);
   y = Math.round(y);
 
-  for (let i = -2; i <= 2; i++) {
-    for (let j = -2; j <= 2; j++) {
+  for (let i = -3; i <= 3; i++) {
+    for (let j = -3; j <= 3; j++) {
       if (x - i >= 0 && x - i < height && y - j >= 0 && y - j < width) {
-        channel._matrix[x - i][y - j] = intensity;
+        channel[x - i][y - j] = intensity;
       }
     }
   }
+}
+
+function clone(channel) {
+  const cloned = [];
+  channel.forEach((row) => {
+    cloned.push([...row]);
+  });
+  return cloned;
 }
 
 module.exports = plot;

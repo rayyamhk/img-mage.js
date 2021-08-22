@@ -1,10 +1,10 @@
 const Matrix = require("@rayyamhk/matrix");
 const Image = require('../../Image');
-const { invalid_channels_number } = require('../../Errors');
+const { INVALID_RGB } = require('../../Errors');
 
 function YIQtoRGB() {
   if (this.channels.length < 3) {
-    throw invalid_channels_number(this.channels.length);
+    throw INVALID_RGB;
   }
 
   const M = new Matrix([
@@ -13,28 +13,28 @@ function YIQtoRGB() {
     [1, -1.108177, 1.705065],
   ]);
 
-  const width = this.width;
-  const height = this.height;
+  const w = this.width;
+  const h = this.height;
 
   let R = [], G = [], B = [];
 
-  for (let i = 0; i < height; i++) {
-    for (let j = 0; j < width; j++) {
+  for (let i = 0; i < h; i++) {
+    for (let j = 0; j < w; j++) {
       const yiq = new Matrix([
-        [this.channels[0]._matrix[i][j]],
-        [this.channels[1]._matrix[i][j]],
-        [this.channels[2]._matrix[i][j]],
+        [this.channels[0][i][j]],
+        [this.channels[1][i][j]],
+        [this.channels[2][i][j]],
       ]);
-      const rgb = Matrix.multiply(M, yiq);
-      R.push(rgb._matrix[0][0]);
-      G.push(rgb._matrix[1][0]);
-      B.push(rgb._matrix[2][0]);
+      const rgb = Matrix.multiply(M, yiq)._matrix;
+      R.push(rgb[0][0]);
+      G.push(rgb[1][0]);
+      B.push(rgb[2][0]);
     }
   }
 
-  R = Matrix.fromArray(R, height, width);
-  G = Matrix.fromArray(G, height, width);
-  B = Matrix.fromArray(B, height, width);
+  R = Matrix.fromArray(R, h, w)._matrix;
+  G = Matrix.fromArray(G, h, w)._matrix;
+  B = Matrix.fromArray(B, h, w)._matrix;
 
   const channels = [R, G, B];
 
@@ -42,7 +42,7 @@ function YIQtoRGB() {
     channels.push(this.channels[3]);
   }
 
-  return new Image()._fromChannels(channels, width, height, this);
+  return new Image()._fromChannels(channels, w, h, this);
 }
 
 module.exports = YIQtoRGB;

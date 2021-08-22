@@ -1,4 +1,5 @@
-const Matrix = require('@rayyamhk/matrix');
+const Image = require('../../Image');
+const generate = require('../../utils/generate');
 const { expect_nonnegative } = require('../../Errors');
 
 function pad(sizeX, sizeY) {
@@ -14,17 +15,21 @@ function pad(sizeX, sizeY) {
     sizeY = sizeX;
   }
 
-  const width = this.width + 2 * sizeY;
-  const height = this.height + 2 * sizeX;
+  const w = this.width + 2 * sizeY;
+  const h = this.height + 2 * sizeX;
 
-  const cb = (channel) => Matrix.generate(height, width, (i, j) => {
-    if (i >= sizeX && i < height - sizeX && j >= sizeY && j < width - sizeY) {
-      return channel._matrix[i - sizeX][j - sizeY];
-    }
-    return 0;
-  });
+  const newChannels = [];
+  for (let k = 0; k < this.channels.length; k++) {
+    const channel = this.channels[k];
+    newChannels.push(generate(w, h, (i, j) => {
+      if (i >= sizeX && i < height - sizeX && j >= sizeY && j < width - sizeY) {
+        return channel[i - sizeX][j - sizeY];
+      }
+      return 0;
+    }));
+  }
 
-  return this.map(cb);
+  return new Image()._fromChannels(newChannels, w, h, this);
 }
 
 module.exports = pad;

@@ -17,7 +17,7 @@ function detectCorners(sigma, threshold) {
   const w = this.width;
   const h = this.height;
 
-  const ResponseImage = cornerResponseImage(channel._matrix, sigma)
+  const ResponseImage = cornerResponseImage(channel, w, h, sigma)
   for (let u = 1; u < h - 1; u++) {
     for (let v = 1; v < w - 1; v++) {
       if (isLocalMax(ResponseImage, u, v, w, h)) {
@@ -50,9 +50,7 @@ function detectCorners(sigma, threshold) {
   return cornersOut;
 }
 
-function cornerResponseImage(i, sigma) {
-  const w = i[0].length;
-  const h = i.length;
+function cornerResponseImage(channel, w, h, sigma) {
   const ResponseImage = new Array(h * w);
 
   const fx = new Array(h * w);
@@ -63,14 +61,14 @@ function cornerResponseImage(i, sigma) {
       fy[x * w + y] = 0;
 
       if (x != 0 && x != h - 1) {
-        const up = i[x-1][y];
-        const down = i[x+1][y];
+        const up = channel[x-1][y];
+        const down = channel[x+1][y];
         fx[x * w + y] = down - up;
       }
 
       if (y != 0 && y != w - 1) {
-        const left = i[x][y - 1];
-        const right = i[x][y + 1];
+        const left = channel[x][y - 1];
+        const right = channel[x][y + 1];
         fy[x * w + y] = right - left;
       }
     }
@@ -93,7 +91,7 @@ function cornerResponseImage(i, sigma) {
     }
   }
 
-  const filter = Image.filter(Image.CONSTANT.GAUSSIAN_1D, sigma).flatten();
+  const filter = Image.filter(Image.CONSTANT.GAUSSIAN_1D, sigma);
 
   const smooth_fxfx = applyGaussianFilter(filter, fxfx, w, h);
   const smooth_fyfy = applyGaussianFilter(filter, fyfy, w, h);

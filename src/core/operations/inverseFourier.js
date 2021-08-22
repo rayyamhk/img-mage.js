@@ -1,6 +1,6 @@
 const Complex = require('@rayyamhk/complex');
-const Matrix = require('@rayyamhk/matrix');
 const Image = require('../../Image');
+const generate = require('../../utils/generate');
 
 function inverseFourier() {
   let w = this.width;
@@ -21,30 +21,23 @@ function inverseFourier() {
 
   h = Math.pow(2, hExp);
   w = Math.pow(2, wExp);
+  const size = w * h;
 
   const spatialChannels = [];
 
-  for (let i = 0; i < this.channels.length; i++) {
-    const re = this.fourierChannels[2 * i];
-    const im = this.fourierChannels[2 * i + 1];
+  for (let k = 0; k < this.channels.length; k++) {
+    const fourierChannel = this.fourierChannels[k];
 
-    if (re === null || im === null) {
-      spatialChannels.push(this.channels[i]);
+    if (fourierChannel === null) {
+      spatialChannels.push(this.channels[k]);
       continue;
     }
 
-    const paddedRe = Matrix.generate(h, w, (i, j) => {
+    const paddedFourierChannel = generate(w, h, (i, j) => {
       if (i < this.height && j < this.width) {
-        return re._matrix[i][j];
+        return fourierChannel[i][j];
       }
-      return 0;
-    });
-
-    const paddedIm = Matrix.generate(h, w, (i, j) => {
-      if (i < this.height && j < this.width) {
-        return im._matrix[i][j];
-      }
-      return 0;
+      return new Complex(0);
     });
 
     const tempf = new Array(w * h);
@@ -53,7 +46,7 @@ function inverseFourier() {
     for (let x = 0; x < h; x++) {
       let row = new Array(w);
       for (let y = 0; y < w; y++) {
-        row[y] = new Complex(paddedRe._matrix[x][y], paddedIm._matrix[x][y]);
+        row[y] = paddedFourierChannel[x][y];
       }
 
       row = fourier1D(row);
@@ -72,13 +65,13 @@ function inverseFourier() {
       col = fourier1D(col);
 
       for (let x = 0; x < h; x++) {
-        f[x * w + y] = col[x].getReal() * Math.pow(-1, x + y) / (w * h);
+        const intensity = col[x].getReal() / size;
+        f[x * w + y] = intensity * Math.pow(-1, x + y);
       }
     }
 
-    const paddedImage = Matrix.fromArray(f, h, w);
-    const unpaddedImage = Matrix.submatrix(paddedImage, `0:${this.height - 1}`, `0:${this.width - 1}`);
-    spatialChannels.push(unpaddedImage);
+    const image = generate(this.width, this.height, (i, j) => f[i * w + j]);
+    spatialChannels.push(image);
   }
 
   return new Image()._fromChannels(spatialChannels, this.width, this.height, this);

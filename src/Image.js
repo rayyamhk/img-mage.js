@@ -16,7 +16,7 @@ class Image {
     return [this.width, this.height];
   }
 
-  bitDepth() {
+  getBitDepth() {
     return this.bitDepth;
   }
 
@@ -110,6 +110,7 @@ Image.prototype.blur = require('./core/enhancements/blur');
 // Image.prototype.denoising = require('./core/denoising');
 
 // operations
+Image.prototype.abs = require('./core/operations/abs');
 Image.prototype.add = require('./core/operations/add');
 Image.prototype.convolve1D = require('./core/operations/convolve1D');
 Image.prototype.convolve2D = require('./core/operations/convolve2D');
