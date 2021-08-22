@@ -1,5 +1,5 @@
 const Matrix = require("@rayyamhk/matrix");
-const Image = require('../../index');
+const Image = require('../../Image');
 const { invalid_channels_number } = require('../../Errors');
 
 function YIQtoRGB() {

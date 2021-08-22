@@ -1,6 +1,6 @@
 const Matrix = require('@rayyamhk/matrix');
 const Complex = require('@rayyamhk/complex');
-const Image = require('../../index');
+const Image = require('../../Image');
 
 function fourierSpectrum() {
   const w = this.width;

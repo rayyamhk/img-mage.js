@@ -1,5 +1,4 @@
 const Matrix = require('@rayyamhk/matrix');
-const Image = require('../../index');
 
 function rescale() {
   const h = this.height;

@@ -1,5 +1,5 @@
 const Matrix = require('@rayyamhk/matrix');
-const Image = require('../../index');
+const Image = require('../../Image');
 const { INVALID_IMAGE, size_incompatible } = require('../../Errors');
 
 function add(image, ...channels) {

@@ -1,4 +1,4 @@
-const Image = require('../../index');
+const Image = require('../../Image');
 
 function blur(sigma, ...channels) {
   const GAUSSIAN_1D = Image.CONSTANT.GAUSSIAN_1D;

@@ -1,4 +1,4 @@
-const Image = require('../../index');
+const Image = require('../../Image');
 const { invalid_channels, invalid_dimensions } = require('../../Errors');
 
 // cb takes a channel and its index as input and returns a processed channel

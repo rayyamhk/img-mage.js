@@ -1,6 +1,6 @@
 const Complex = require('@rayyamhk/complex');
 const Matrix = require('@rayyamhk/matrix');
-const Image = require('../../index');
+const Image = require('../../Image');
 
 function inverseFourier() {
   let w = this.width;
