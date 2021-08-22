@@ -115,6 +115,8 @@ Image.prototype.convolve1D = require('./core/operations/convolve1D');
 Image.prototype.convolve2D = require('./core/operations/convolve2D');
 Image.prototype.fourier = require('./core/operations/fourier');
 Image.prototype.inverseFourier = require('./core/operations/inverseFourier');
+Image.prototype.multiply = require('./core/operations/multiply');
+Image.prototype.subtract = require('./core/operations/subtract');
 
 // constants
 Image.CONSTANT = constant;
