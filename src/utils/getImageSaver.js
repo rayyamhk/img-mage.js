@@ -1,12 +1,12 @@
 const { invalid_image_path, unknown_image } = require('../Errors');
-const { loadJPEG } = require('./JPEG');
+const { saveJPEG } = require('./JPEG');
 
-const loaders = {
-  jpg: loadJPEG,
-  jpeg: loadJPEG,
+const savers = {
+  jpg: saveJPEG,
+  jpeg: saveJPEG,
 };
 
-function getImageLoader(path) {
+function getImageSaver(path) {
   if (typeof path !== 'string') {
     throw invalid_image_path(path);
   }
@@ -19,13 +19,13 @@ function getImageLoader(path) {
 
   fileExt = fileExt[fileExt.length - 1];
 
-  for (let key in loaders) {
+  for (let key in savers) {
     if (fileExt === key) {
-      return loaders[key];
+      return savers[key];
     }
   }
 
   throw unknown_image(path);
 }
 
-module.exports = getImageLoader;
+module.exports = getImageSaver;

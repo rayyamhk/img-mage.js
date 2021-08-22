@@ -1,4 +1,5 @@
 const getImageLoader = require('./utils/getImageLoader');
+const getImageSaver = require('./utils/getImageSaver');
 const constant = require('./core/constant');
 
 class Image {
@@ -15,9 +16,8 @@ class Image {
     return [this.width, this.height];
   }
 
-  fromSource(path, option) {
-    const [loader, saver] = getImageLoader(path);
-    this.saver = saver;
+  load(path, option) {
+    const loader = getImageLoader(path);
 
     const {
       bitDepth,
@@ -34,18 +34,20 @@ class Image {
     this.height = height;
     this.bitDepth = bitDepth;
     this.channels = channels;
+    this.fourierChannels = [];
     this.ignoreAlpha = ignoreAlpha;
 
     return this;
   }
 
   save(path) {
-    this.saver(path, this.channels, this.width, this.height);
+    const saver = getImageSaver(path);
+    saver(path, this.channels, this.width, this.height);
   }
 
   _fromChannels(channels, width, height, image) {
     this.bitDepth = image.bitDepth;
-    this.saver = image.saver;
+    this.ignoreAlpha = image.ignoreAlpha;
 
     this.channels = channels;
     this.fourierChannels = [];
@@ -56,7 +58,7 @@ class Image {
 
   _fromFourierChannels(fourierChannels, spatialChannels, width, height, image) {
     this.bitDepth = image.bitDepth;
-    this.saver = image.saver;
+    this.ignoreAlpha = image.ignoreAlpha;
 
     this.channels = spatialChannels;
     this.fourierChannels = fourierChannels;
@@ -93,7 +95,7 @@ Image.prototype.rotate = require('./core/transformations/rotate');
 
 // enhancement
 Image.prototype.blur = require('./core/enhancements/blur');
-Image.prototype.sharpen = require('./core/enhancements/sharpen');
+// Image.prototype.sharpen = require('./core/enhancements/sharpen');
 
 // restoration
 // Image.prototype.denoising = require('./core/denoising');
