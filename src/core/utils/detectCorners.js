@@ -93,7 +93,7 @@ function cornerResponseImage(i, sigma) {
     }
   }
 
-  const filter = Image.kernel(Image.CONSTANT.GAUSSIAN_1D, sigma).flatten();
+  const filter = Image.filter(Image.CONSTANT.GAUSSIAN_1D, sigma).flatten();
 
   const smooth_fxfx = applyGaussianFilter(filter, fxfx, w, h);
   const smooth_fyfy = applyGaussianFilter(filter, fyfy, w, h);
