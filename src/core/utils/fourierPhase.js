@@ -19,7 +19,7 @@ function fourierSpectrum() {
     re = re._matrix;
     im = im._matrix;
 
-    spatialChannels.push(Matrix.generate(h, w, (i, j) => new Complex(re[i][j], im[i][j]).getModulus()));
+    spatialChannels.push(Matrix.generate(h, w, (i, j) => new Complex(re[i][j], im[i][j]).getArgument()));
   }
 
   return new Image()._fromChannels(spatialChannels, w, h, this);

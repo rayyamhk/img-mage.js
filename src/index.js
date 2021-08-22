@@ -72,6 +72,7 @@ module.exports = Image;
 Image.prototype.clip = require('./core/utils/clip');
 // Image.prototype.detectCorners = require('./core/utils/detectCorners');
 // Image.prototype.detectEdges = require('./core/detectEdges');
+Image.prototype.fourierPhase = require('./core/utils/fourierPhase');
 Image.prototype.fourierSpectrum = require('./core/utils/fourierSpectrum');
 Image.kernel = require('./core/utils/kernel');
 Image.prototype.map = require('./core/utils/map');
