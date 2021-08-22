@@ -1,4 +1,5 @@
 const Matrix = require('@rayyamhk/matrix');
+const Complex = require('@rayyamhk/complex');
 const constant = require('../constant');
 
 function filter(type, ...options) {
@@ -28,6 +29,60 @@ function filter(type, ...options) {
     case constant.GAUSSIAN_2D: {
       const sigma = options[0] || 0.5;
       return gaussianFilter2D(sigma);
+    }
+    case constant.ILPF: {
+      const cutoff = options[0] || 10;
+
+      return (pixel, i, j, k, centerX, centerY) => {
+        if (distance(i, j, centerX, centerY) <= cutoff) {
+          return pixel;
+        }
+        return new Complex(0);
+      }
+    }
+    case constant.GLPF: {
+      const cutoff = options[0] || 10;
+      return (pixel, i, j, k, centerX, centerY) => {
+        const dist = distance(i, j, centerX, centerY);
+        const scale = Math.exp(-0.5 * (dist ** 2) / (cutoff ** 2));
+        return Complex.multiply(pixel, new Complex(scale));
+      }
+    }
+    case constant.BLPF: {
+      const cutoff = options[0] || 10;
+      const order = options[1] || 2;
+      return (pixel, i, j, k, centerX, centerY) => {
+        const dist = distance(i, j, centerX, centerY);
+        const scale = 1 / (1 + (dist / cutoff) ** (2 * order));
+        return Complex.multiply(pixel, new Complex(scale));
+      }
+    }
+    case constant.IHPF: {
+      const cutoff = options[0] || 10;
+
+      return (pixel, i, j, k, centerX, centerY) => {
+        if (distance(i, j, centerX, centerY) <= cutoff) {
+          return new Complex(0);
+        }
+        return pixel;
+      }
+    }
+    case constant.GHPF: {
+      const cutoff = options[0] || 10;
+      return (pixel, i, j, k, centerX, centerY) => {
+        const dist = distance(i, j, centerX, centerY);
+        const scale = Math.exp(-0.5 * (dist ** 2) / (cutoff ** 2));
+        return Complex.multiply(pixel, new Complex(1 - scale));
+      }
+    }
+    case constant.BHPF: {
+      const cutoff = options[0] || 10;
+      const order = options[1] || 2;
+      return (pixel, i, j, k, centerX, centerY) => {
+        const dist = distance(i, j, centerX, centerY);
+        const scale = 1 / (1 + (dist / cutoff) ** (2 * order));
+        return Complex.multiply(pixel, new Complex(1 - scale));
+      }
     }
   }   
 }
@@ -104,4 +159,8 @@ function gaussianFilter2D(sigma) {
     };
     return filter[i];
   })._matrix;
+}
+
+function distance(x, y, cx, cy) {
+  return Math.sqrt((x - cx) ** 2 + (y - cy) ** 2);
 }

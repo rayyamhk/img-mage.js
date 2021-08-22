@@ -5,11 +5,12 @@ const constant = require('./core/constant');
 class Image {
   constructor() {
     this.channels = [];
-    this.fourierChannels = [];
     this.width = 0;
     this.height = 0;
     this.bitDepth = 0;
-    this.saver = null;
+    this.fourierChannels = [];
+    this.fourierCenterX = null;
+    this.fourierCenterY = null;
   }
 
   size() {
@@ -43,6 +44,8 @@ class Image {
     this.bitDepth = bitDepth;
     this.channels = channels;
     this.fourierChannels = [];
+    this.fourierCenterX = null;
+    this.fourierCenterY = null;
     this.ignoreAlpha = ignoreAlpha;
 
     return this;
@@ -58,18 +61,22 @@ class Image {
     this.ignoreAlpha = image.ignoreAlpha;
 
     this.channels = channels;
-    this.fourierChannels = [];
     this.width = width;
     this.height = height;
+    this.fourierChannels = [];
+    this.fourierCenterX = null;
+    this.fourierCenterY = null;
     return this;
   }
 
-  _fromFourierChannels(fourierChannels, spatialChannels, width, height, image) {
+  _fromFourierChannels(fourierChannels, centerX, centerY, spatialChannels, width, height, image) {
     this.bitDepth = image.bitDepth;
     this.ignoreAlpha = image.ignoreAlpha;
 
     this.channels = spatialChannels;
     this.fourierChannels = fourierChannels;
+    this.fourierCenterX = centerX;
+    this.fourierCenterY = centerY;
     this.width = width;
     this.height = height;
     return this;
@@ -81,6 +88,7 @@ module.exports = Image;
 // utils
 Image.prototype.clip = require('./core/utils/clip');
 Image.prototype.detectCorners = require('./core/utils/detectCorners');
+Image.prototype.fourierMap = require('./core/utils/fourierMap');
 Image.prototype.fourierPhase = require('./core/utils/fourierPhase');
 Image.prototype.fourierSpectrum = require('./core/utils/fourierSpectrum');
 Image.prototype.map = require('./core/utils/map');
