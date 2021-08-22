@@ -14,7 +14,10 @@ module.exports = {
   invalid_kernel: (arg) => new TypeError(`Expect instance of Matrix but received ${arg}.`),
   invalid_argument: (argName, expected, received) => new TypeError(`Invalid argument ${argName}. Expected ${expected} but ${received} is received.`),
   size_incompatible: (rw, rh, ew, eh) => new RangeError(`Received incompatible size, received ${rw} ${rh} but ${ew} ${eh} are expected.`),
+  invalid_coordinate: (point) => new TypeError(`Expect an array with size 2, but received ${point}.`),
+  invalid_fourier_channels: (channels) => new TypeError(`Invalid fourier channels, expect an even number length array but received ${channels}`),
 
+  INVALID_ARRAY: new TypeError('Expect an array.'),
   INVALID_IMAGE: new TypeError('Received Invalid Image'),
   INVALID_RGB: new TypeError('Expect RGB image.'),
 }

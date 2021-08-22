@@ -35,7 +35,8 @@
   "main": "src/index.js",
   "scripts": {},
   "dependencies": {
-    "@rayyamhk/matrix": "1.0.7",
+    "@rayyamhk/complex": "1.0.12",
+    "@rayyamhk/matrix": "1.0.8",
     "jpeg-js": "0.4.3"
   }
 }

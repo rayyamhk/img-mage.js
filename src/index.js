@@ -4,6 +4,7 @@ const constant = require('./core/constant');
 class Image {
   constructor() {
     this.channels = [];
+    this.fourierChannels = [];
     this.width = 0;
     this.height = 0;
     this.bitDepth = 0;
@@ -47,6 +48,18 @@ class Image {
     this.saver = image.saver;
 
     this.channels = channels;
+    this.fourierChannels = [];
+    this.width = width;
+    this.height = height;
+    return this;
+  }
+
+  _fromFourierChannels(fourierChannels, spatialChannels, width, height, image) {
+    this.bitDepth = image.bitDepth;
+    this.saver = image.saver;
+
+    this.channels = spatialChannels;
+    this.fourierChannels = fourierChannels;
     this.width = width;
     this.height = height;
     return this;
@@ -57,15 +70,18 @@ module.exports = Image;
 
 // utils
 Image.prototype.clip = require('./core/utils/clip');
-// Image.prototype.detectCorners = require('./core/detectCorners');
+// Image.prototype.detectCorners = require('./core/utils/detectCorners');
 // Image.prototype.detectEdges = require('./core/detectEdges');
+Image.prototype.fourierSpectrum = require('./core/utils/fourierSpectrum');
 Image.kernel = require('./core/utils/kernel');
 Image.prototype.map = require('./core/utils/map');
+Image.prototype.rescale = require('./core/utils/rescale');
 Image.prototype.RGBtoYIQ = require('./core/utils/RGBtoYIQ');
 Image.prototype.YIQtoRGB = require('./core/utils/YIQtoRGB');
 
 // transformations
 Image.prototype.crop = require('./core/transformations/crop');
+Image.prototype.logTransform = require('./core/transformations/logTransform');
 Image.prototype.negative = require('./core/transformations/negative');
 Image.prototype.pad = require('./core/transformations/pad');
 Image.prototype.powerLawTransform = require('./core/transformations/powerLawTransform');
@@ -85,8 +101,8 @@ Image.prototype.sharpen = require('./core/enhancements/sharpen');
 Image.prototype.add = require('./core/operations/add');
 Image.prototype.convolve1D = require('./core/operations/convolve1D');
 Image.prototype.convolve2D = require('./core/operations/convolve2D');
-// Image.prototype.fourier = require('./core/fourier');
-// Image.prototype.inverseFourier = require('./core/inverseFourier');
+Image.prototype.fourier = require('./core/operations/fourier');
+Image.prototype.inverseFourier = require('./core/operations/inverseFourier');
 
 // constants
 Image.CONSTANT = constant;
