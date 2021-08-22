@@ -16,6 +16,14 @@ class Image {
     return [this.width, this.height];
   }
 
+  bitDepth() {
+    return this.bitDepth;
+  }
+
+  channelsNumber() {
+    return this.channels.length;
+  }
+
   load(path, option) {
     const loader = getImageLoader(path);
 
@@ -81,7 +89,7 @@ Image.prototype.rescale = require('./core/utils/rescale');
 Image.prototype.RGBtoYIQ = require('./core/utils/RGBtoYIQ');
 Image.prototype.YIQtoRGB = require('./core/utils/YIQtoRGB');
 
-Image.kernel = require('./core/utils/kernel');
+Image.filter = require('./core/utils/filter');
 
 // transformations
 Image.prototype.crop = require('./core/transformations/crop');
