@@ -2,7 +2,7 @@ const Matrix = require('@rayyamhk/matrix');
 const Complex = require('@rayyamhk/complex');
 const Image = require('../../Image');
 
-function fourierSpectrum() {
+function fourierPhase() {
   const w = this.width;
   const h = this.height;
   const spatialChannels = [];
@@ -25,4 +25,4 @@ function fourierSpectrum() {
   return new Image()._fromChannels(spatialChannels, w, h, this);
 }
 
-module.exports = fourierSpectrum;
+module.exports = fourierPhase;

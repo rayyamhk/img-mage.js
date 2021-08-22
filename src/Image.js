@@ -72,15 +72,16 @@ module.exports = Image;
 
 // utils
 Image.prototype.clip = require('./core/utils/clip');
-// Image.prototype.detectCorners = require('./core/utils/detectCorners');
-// Image.prototype.detectEdges = require('./core/detectEdges');
+Image.prototype.detectCorners = require('./core/utils/detectCorners');
 Image.prototype.fourierPhase = require('./core/utils/fourierPhase');
 Image.prototype.fourierSpectrum = require('./core/utils/fourierSpectrum');
-Image.kernel = require('./core/utils/kernel');
 Image.prototype.map = require('./core/utils/map');
+Image.prototype.plot = require('./core/utils/plot');
 Image.prototype.rescale = require('./core/utils/rescale');
 Image.prototype.RGBtoYIQ = require('./core/utils/RGBtoYIQ');
 Image.prototype.YIQtoRGB = require('./core/utils/YIQtoRGB');
+
+Image.kernel = require('./core/utils/kernel');
 
 // transformations
 Image.prototype.crop = require('./core/transformations/crop');
