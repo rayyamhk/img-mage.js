@@ -77,7 +77,7 @@ function fourier(...channels) {
     }
   }
 
-  return new Image()._fromFourierChannels(fourierChannels, spatialChannels, this.width, this.height, this);
+  return new Image()._fromFourierChannels(fourierChannels, h / 2, w / 2, spatialChannels, this.width, this.height, this);
 }
 
 function fourier1D(f) {

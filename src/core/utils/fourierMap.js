@@ -1,29 +1,39 @@
 const Image = require('../../Image');
 const isValidChannels = require('../../utils/isValidChannels');
 
-function map(cb, ...channels) {
+function fourierMap(cb, ...channels) {
   channels = isValidChannels(channels, this.channels.length);
 
-  const newChannels = [];
+  const w = this.width;
+  const h = this.height;
+  const centerX = this.fourierCenterX;
+  const centerY = this.fourierCenterY;
 
+  const newFourierChannels = [];
   for (let k = 0; k < this.channels.length; k++) {
+    const fourierChannel = this.fourierChannels[k];
+
+    if (fourierChannel === null) {
+      newFourierChannels.push(null);
+      continue;
+    }
+
     if (channels.includes(k)) {
-      const re = this.fourierChannels[2 * k];
-      const im = this.fourierChannels[2 * k + 1];
-
-      if (re === null || im === null) {
-        continue;
+      const channel = [];
+      for (let i = 0; i < h; i++) {
+        const row = [];
+        for (let j = 0; j < w; j++) {
+          row.push(cb(fourierChannel[i][j], i, j, k, centerX, centerY, fourierChannel));
+        }
+        channel.push(row);
       }
-
-      const newChannel = cb(channel, k);
-
-      newChannels.push(newChannel);
+      newFourierChannels.push(channel);
     } else {
-      newChannels.push(this.channels[k]);
+      newFourierChannels.push(fourierChannel);
     }
   }
 
-  return new Image()._fromChannels(newChannels, width, height, this);
+  return new Image()._fromFourierChannels(newFourierChannels, centerX, centerY, this.channels, w, h, this);
 }
 
-module.exports = map;
+module.exports = fourierMap;
