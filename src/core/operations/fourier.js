@@ -1,9 +1,11 @@
 const Complex = require('@rayyamhk/complex');
-const Matrix = require('@rayyamhk/matrix');
 const Image = require('../../Image');
-const { invalid_channels } = require('../../Errors');
+const isValidChannels = require('../../utils/isValidChannels');
+const generate = require('../../utils/generate');
 
 function fourier(...channels) {
+  channels = isValidChannels(channels, this.channels.length);
+
   let w = this.width;
   let h = this.height;
 
@@ -23,27 +25,16 @@ function fourier(...channels) {
   h = Math.pow(2, hExp);
   w = Math.pow(2, wExp);
 
-  if (channels.length > 4) {
-    throw invalid_channels(channels);
-  }
-
-  if (channels.length === 0) {
-    let length = this.channels.length;
-    if (length === 4 && this.ignoreAlpha) {
-      length = 3;
-    }
-    channels = [...new Array(this.channels.length).keys()];
-  }
-
   const fourierChannels = [];
   const spatialChannels = [];
 
-  for (let i = 0; i < this.channels.length; i++) {
-    if (channels.includes(i)) {
-      const channel = this.channels[i];
-      const padded = Matrix.generate(h, w, (i, j) => {
+  for (let k = 0; k < this.channels.length; k++) {
+    const channel = this.channels[k];
+
+    if (channels.includes(k)) {
+      const padded = generate(w, h, (i, j) => {
         if (i < this.height && j < this.width) {
-          return channel._matrix[i][j];
+          return channel[i][j];
         }
         return 0;
       });
@@ -54,11 +45,11 @@ function fourier(...channels) {
       for (let x = 0; x < h; x++) {
         let row = new Array(w);
         for (let y = 0; y < w; y++) {
-          row[y] = new Complex(padded._matrix[x][y] * Math.pow(-1, y));
+          row[y] = new Complex(padded[x][y] * Math.pow(-1, y));
         }
-  
+
         row = fourier1D(row);
-  
+
         for (let y = 0; y < w; y++) {
           tempF[x * w + y] = row[y];
         }
@@ -76,24 +67,13 @@ function fourier(...channels) {
           F[x * w + y] = col[x];
         }
       }
-  
-      const re = new Array(w * h);
-      const im = new Array(w * h);
-  
-      for (let i = 0; i < w * h; i++) {
-        re[i] = F[i].getReal();
-        im[i] = F[i].getImaginary();
-      }
-  
-      const paddedRe = Matrix.fromArray(re, h, w);
-      const unpaddedRe = Matrix.submatrix(paddedRe, `0:${this.height - 1}`, `0:${this.width - 1}`);
-      const paddedIm = Matrix.fromArray(im, h, w);
-      const unpaddedIm = Matrix.submatrix(paddedIm, `0:${this.height - 1}`, `0:${this.width - 1}`);
-      fourierChannels.push(unpaddedRe, unpaddedIm);
+
+      const fourierChannel = generate(this.width, this.height, (i, j) => F[i * w + j]);
+      fourierChannels.push(fourierChannel);
       spatialChannels.push(null);
     } else {
-      fourierChannels.push(null, null);
-      spatialChannels.push(this.channels[i]);
+      fourierChannels.push(null);
+      spatialChannels.push(channel);
     }
   }
 

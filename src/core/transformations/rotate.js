@@ -1,4 +1,5 @@
-const Matrix = require('@rayyamhk/matrix');
+const Image = require('../../Image');
+const generate = require('../../utils/generate');
 const { invalid_rotation } = require('../../Errors');
 
 function rotate(rotation) {
@@ -6,27 +7,34 @@ function rotate(rotation) {
     throw invalid_rotation(rotation);
   }
 
-  const width = this.width;
-  const height = this.height;
-
-  const col = width;
-  const row = height;
+  const w = this.width;
+  const h = this.height;
+  const newChannels = [];
 
   // clockwise 90
   if (rotation === -3 || rotation === 1) {
-    const cb = (channel) => Matrix.generate(col, row, (i, j) => channel._matrix[row - 1 - j][i]);
-    return this.map(cb);
+    for (let k = 0; k < this.channels.length; k++) {
+      const channel = this.channels[k];
+      newChannels.push(generate(h, w, (i, j) => channel[row - 1 - j][i]));
+    }
+    return new Image()._fromChannels(newChannels, h, w, this);
   }
 
   // clockwise 180
   if (rotation === 2 || rotation === -2) {
-    const cb = (channel) => Matrix.generate(row, col, (i, j) => channel._matrix[row - 1 - i][col - 1 - j]);
-    return this.map(cb);
+    for (let k = 0; k < this.channels.length; k++) {
+      const channel = this.channels[k];
+      newChannels.push(generate(w, h, (i, j) => channel[row - 1 - i][col - 1 - j]));
+    }
+    return new Image()._fromChannels(newChannels, w, h, this);
   }
 
   // clockwise 270
-  const cb = (channel) => Matrix.generate(col, row, (i, j) => channel._matrix[j][col - 1- i]);
-  return this.map(cb);
+  for (let k = 0; k < this.channels.length; k++) {
+    const channel = this.channels[k];
+    newChannels.push(generate(h, w, (i, j) => channel[j][col - 1- i]));
+  }
+  return new Image()._fromChannels(newChannels, h, w, this);
 }
 
 module.exports = rotate;

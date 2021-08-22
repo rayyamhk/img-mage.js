@@ -1,54 +1,33 @@
 const Image = require('../../Image');
-const { invalid_channels, invalid_dimensions } = require('../../Errors');
+const isValidChannels = require('../../utils/isValidChannels');
 
-// cb takes a channel and its index as input and returns a processed channel
 function map(cb, ...channels) {
-  if (channels.length > 4) {
-    throw invalid_channels(channels);
-  }
+  channels = isValidChannels(channels, this.channels.length);
 
-  if (channels.length === 0) {
-    let length = this.channels.length;
-    if (length === 4 && this.ignoreAlpha) {
-      length = 3;
-    }
-    channels = [...new Array(this.channels.length).keys()];
-  }
-
-  // used to check the size compatibility
-  let width = null; height = null;
-
-  // some channels are unchanged ==> image dimensions unchanged
-  if (channels.length < this.channels.length) {
-    width = this.width;
-    height = this.height;
-  }
-
+  const w = this.width;
+  const h = this.height;
   const newChannels = [];
 
   for (let k = 0; k < this.channels.length; k++) {
     if (channels.includes(k)) {
       const channel = this.channels[k];
-      const newChannel = cb(channel, k);
 
-      // dimensions checking
-      const [row, col] = newChannel.size();
-      if (!width || !height) {
-        width = col;
-        height = row;
-      } else if (width !== col) {
-        invalid_dimensions(col, width);
-      } else if (height !== row) {
-        invalid_dimensions(row, height);
+      const newChannel = [];
+      for (let i = 0; i < h; i++) {
+        const row = [];
+        for (let j = 0; j < w; j++) {
+          row.push(cb(channel[i][j], i, j, k, channel));
+        }
+        newChannel.push(row);
       }
-
       newChannels.push(newChannel);
+
     } else {
       newChannels.push(this.channels[k]);
     }
   }
 
-  return new Image()._fromChannels(newChannels, width, height, this);
+  return new Image()._fromChannels(newChannels, w, h, this);
 }
 
 module.exports = map;

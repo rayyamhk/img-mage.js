@@ -2,7 +2,9 @@ const Matrix = require('@rayyamhk/matrix');
 const { invalid_kernel_size, invalid_kernel, invalid_argument } = require('../../Errors');
 
 function convolve1D(kernel, direction, ...channels) {
-  if (!(kernel instanceof Matrix)) {
+  try {
+    kernel = new Matrix([kernel]);
+  } catch (err) {
     throw invalid_kernel(kernel);
   }
 
@@ -29,7 +31,7 @@ function convolve1D(kernel, direction, ...channels) {
 
   const padSize = (kernelSize - 1) / 2;
 
-  const cb = (channel) => Matrix.generate(height, width, (i, j) => {
+  const cb = (pixel, i, j, k, channel) => {
     let sum = 0;
     for (let n = -padSize; n <= padSize; n++) {
       const posX = direction === 'x' ? i - n : i;
@@ -38,11 +40,11 @@ function convolve1D(kernel, direction, ...channels) {
         continue; // weight = 0
       }
       const weight = kernel[n+padSize];
-      const intensity = channel._matrix[posX][posY];
+      const intensity = channel[posX][posY];
       sum += intensity * weight;
     }
     return sum;
-  });
+  }
 
   return this.map(cb, ...channels);
 }

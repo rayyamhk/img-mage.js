@@ -1,21 +1,27 @@
-const Matrix = require("@rayyamhk/matrix");
+const Image = require('../../Image');
+const generate = require('../../utils/generate');
 
 function clip() {
   const maxIntensity = 2 ** this.bitDepth - 1;
-  const width = this.width;
-  const height = this.height;
+  const w = this.width;
+  const h = this.height;
 
-  const cb = (channel) => Matrix.generate(height, width, (i, j) => {
-    if (channel._matrix[i][j] < 0) {
-      return 0;
-    }
-    if (channel._matrix[i][j] > maxIntensity) {
-      return maxIntensity;
-    }
-    return channel._matrix[i][j];
-  });
+  const clippedChannels = [];
+  for (let k = 0; k < this.channels.length; k++) {
+    const channel = this.channels[k];
 
-  return this.map(cb);
+    clippedChannels.push(generate(w, h, (i, j) => {
+      if (channel[i][j] < 0) {
+        return 0;
+      } else if (channel[i][j] > maxIntensity) {
+        return maxIntensity;
+      } else {
+        return channel[i][j];
+      }
+    }));
+  }
+
+  return new Image()._fromChannels(clippedChannels, w, h, this);
 }
 
 module.exports = clip;

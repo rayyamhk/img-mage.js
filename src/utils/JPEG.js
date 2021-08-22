@@ -18,9 +18,9 @@ function loadJPEG(path) {
     B.push(data[i + 2]);
   }
 
-  R = Matrix.fromArray(R, height, width);
-  G = Matrix.fromArray(G, height, width);
-  B = Matrix.fromArray(B, height, width);
+  R = Matrix.fromArray(R, height, width)._matrix;
+  G = Matrix.fromArray(G, height, width)._matrix;
+  B = Matrix.fromArray(B, height, width)._matrix;
 
   return {
     bitDepth: 8,
@@ -36,9 +36,9 @@ function saveJPEG(path, channels, width, height) {
     throw INVALID_IMAGE;
   }
 
-  R = R.flatten();
-  G = G.flatten();
-  B = B.flatten();
+  R = new Matrix(R).flatten();
+  G = new Matrix(G).flatten();
+  B = new Matrix(B).flatten();
 
   const length = width * height * 4;
   const buffer = Buffer.alloc(length);

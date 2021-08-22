@@ -1,6 +1,5 @@
-const Matrix = require('@rayyamhk/matrix');
-const Complex = require('@rayyamhk/complex');
 const Image = require('../../Image');
+const generate = require('../../utils/generate');
 
 function fourierPhase() {
   const w = this.width;
@@ -8,18 +7,15 @@ function fourierPhase() {
   const spatialChannels = [];
 
   for (let i = 0; i < this.channels.length; i++) {
-    let re = this.fourierChannels[2 * i];
-    let im = this.fourierChannels[2 * i + 1];
+    const fourierChannel = this.fourierChannels[i];
 
-    if (re === null || im === null) {
-      spatialChannels.push(Matrix.zero(h, w));
+    if (fourierChannel === null) {
+      const zeros = new Array(h).fill(new Array(w).fill(0));
+      spatialChannels.push(zeros);
       continue;
     }
 
-    re = re._matrix;
-    im = im._matrix;
-
-    spatialChannels.push(Matrix.generate(h, w, (i, j) => new Complex(re[i][j], im[i][j]).getArgument()));
+    spatialChannels.push(generate(w, h, (i, j) => fourierChannel[i][j].getArgument()));
   }
 
   return new Image()._fromChannels(spatialChannels, w, h, this);

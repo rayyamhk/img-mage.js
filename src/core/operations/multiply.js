@@ -1,4 +1,3 @@
-const Matrix = require('@rayyamhk/matrix');
 const Image = require('../../Image');
 const { INVALID_IMAGE, size_incompatible } = require('../../Errors');
 
@@ -13,7 +12,7 @@ function multiply(image, ...channels) {
     throw size_incompatible(width, height, this.width, this.height);
   }
 
-  const cb = (channel, k) => Matrix.generate(height, width, (i, j) => channel._matrix[i][j] * image.channels[k]._matrix[i][j]);
+  const cb = (pixel, i, j, k) => pixel * image.channels[k][i][j];
 
   return this.map(cb, ...channels);
 }

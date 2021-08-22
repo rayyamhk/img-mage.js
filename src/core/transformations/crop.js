@@ -1,19 +1,25 @@
-const Matrix = require('@rayyamhk/matrix');
-const {
-  invalid_index,
-  expect_nonnegative,
-} = require('../../Errors');
+const Image = require('../../Image');
+const generate = require('../../utils/generate');
+const { expect_nonnegative, overflow } = require('../../Errors');
 
 function crop(x, y, w, h) {
   const width = this.width;
   const height = this.height;
 
-  if (typeof x !== 'number' || !Number.isInteger(x) || x < 0 || x > height) {
-    throw invalid_index(x);
+  if (typeof x !== 'number' || !Number.isInteger(x) || x < 0) {
+    throw expect_nonnegative(x);
   }
 
-  if (typeof y !== 'number' || !Number.isInteger(y) || y < 0 || y > width) {
-    throw invalid_index(y);
+  if (x > height) {
+    overflow(x, height);
+  }
+
+  if (typeof y !== 'number' || !Number.isInteger(y) || y < 0) {
+    throw expect_nonnegative(y);
+  }
+  
+  if (y > width) {
+    overflow(y, width);
   }
 
   if (typeof w !== 'number' || !Number.isInteger(w) || w < 0) {
@@ -24,12 +30,16 @@ function crop(x, y, w, h) {
     throw expect_nonnegative(h);
   }
 
-  const y_end = Math.min(y + w - 1, width - 1);
-  const x_end = Math.min(x + h - 1, height - 1);
+  w = Math.min(w, width - y);
+  h = Math.min(h, height - x);
 
-  const cb = (channel) => Matrix.submatrix(channel, `${x}:${x_end}`, `${y}:${y_end}`);
+  const newChannels = [];
+  for (let k = 0; k < this.channels.length; k++) {
+    const channel = this.channels[k];
+    newChannels.push(generate(w, h, (i, j) => channel[x+i][y+j]))
+  }
 
-  return this.map(cb);
+  return new Image()._fromChannels(newChannels, w, h, this);
 }
 
 module.exports = crop;

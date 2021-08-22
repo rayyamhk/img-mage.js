@@ -5,26 +5,25 @@ function filter(type, ...options) {
   switch(type) {
     case constant.BOX_FILTER: {
       const size = options[0] || 3;
-      const weight = 1 / (size ** 2);
-      return Matrix.generate(size, size, (i, j) => weight);
+      return boxFilter(size);
     }
     case constant.LAPLACIAN_45: {
-      return Matrix.generate(3, 3, (i, j) => {
-        if (i === 1 && j === 1) return 4;
-        if (i === 1 || j === 1) return -1;
-        return 0;
-      });
+      return [
+        [0, -1, 0],
+        [-1, 4, -1],
+        [0, -1, 0],
+      ];
     }
     case constant.LAPLACIAN_90: {
-      return Matrix.generate(3, 3, (i, j) => {
-        if (i === 1 && j === 1) return 8;
-        return -1;
-      });
+      return [
+        [-1, -1, -1],
+        [-1, 8, -1],
+        [-1, -1, -1],
+      ];
     }
     case constant.GAUSSIAN_1D: {
       const sigma = options[0] || 0.5;
-      const filter = gaussianFilter1D(sigma);
-      return new Matrix([filter]);
+      return gaussianFilter1D(sigma);
     }
     case constant.GAUSSIAN_2D: {
       const sigma = options[0] || 0.5;
@@ -34,6 +33,11 @@ function filter(type, ...options) {
 }
 
 module.exports = filter;
+
+function boxFilter(size) {
+  const weights = 1 / (size ** 2);
+  return new Array(size).fill(new Array(size).fill(weights));
+}
 
 function gaussianFilter1D(sigma) {
   const temp = Math.pow(Math.log(1/1000)*-2*sigma*sigma, 0.5);
@@ -99,5 +103,5 @@ function gaussianFilter2D(sigma) {
       return filter[j];
     };
     return filter[i];
-  });
+  })._matrix;
 }
