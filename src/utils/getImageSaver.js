@@ -1,5 +1,5 @@
-const { invalid_image_path, unknown_image } = require('../Errors');
 const { saveJPEG } = require('./JPEG');
+const { invalid_image_path, unknown_image } = require('../Errors');
 
 const savers = {
   jpg: saveJPEG,

@@ -1,14 +1,14 @@
-const Matrix = require('@rayyamhk/matrix');
 const Complex = require('@rayyamhk/complex');
 const constant = require('../constant');
-const { invalid_kernel_size, expect_positive } = require('../../Errors');
+const generate = require('../../utils/generate');
+const { invalid_filter_size, expect_positive } = require('../../Errors');
 
 function filter(type, ...options) {
   switch(type) {
     case constant.BOX_FILTER: {
       const size = options[0] || 3;
       if (typeof size !== 'number' || size % 2 !== 1) {
-        throw invalid_kernel_size(size);
+        throw invalid_filter_size(size);
       }
       return boxFilter(size);
     }
@@ -43,7 +43,7 @@ function filter(type, ...options) {
     case constant.MAX_FILTER: {
       const size = options[0] || 3;
       if (typeof size !== 'number' || size % 2 !== 1) {
-        throw invalid_kernel_size(size);
+        throw invalid_filter_size(size);
       }
       const padSize = (size - 1) / 2;
       return (pixel, i, j, k, channel) => {
@@ -67,7 +67,7 @@ function filter(type, ...options) {
     case constant.MIN_FILTER: {
       const size = options[0] || 3;
       if (typeof size !== 'number' || size % 2 !== 1) {
-        throw invalid_kernel_size(size);
+        throw invalid_filter_size(size);
       }
       const padSize = (size - 1) / 2;
       return (pixel, i, j, k, channel) => {
@@ -90,7 +90,6 @@ function filter(type, ...options) {
     }
     case constant.ILPF: {
       const cutoff = options[0] || 10;
-
       return (pixel, i, j, k, centerX, centerY) => {
         if (distance(i, j, centerX, centerY) <= cutoff) {
           return pixel;
@@ -117,7 +116,6 @@ function filter(type, ...options) {
     }
     case constant.IHPF: {
       const cutoff = options[0] || 10;
-
       return (pixel, i, j, k, centerX, centerY) => {
         if (distance(i, j, centerX, centerY) <= cutoff) {
           return new Complex(0);
@@ -202,7 +200,7 @@ function gaussianFilter2D(sigma) {
     filter[i] /= sum;
   }
 
-  return Matrix.generate(size, size, (i, j) => {
+  return generate(size, size, (i, j) => {
     if (i === j || i + j === size - 1) {
       return filter[i];
     };
@@ -216,7 +214,7 @@ function gaussianFilter2D(sigma) {
       return filter[j];
     };
     return filter[i];
-  })._matrix;
+  });
 }
 
 function distance(x, y, cx, cy) {

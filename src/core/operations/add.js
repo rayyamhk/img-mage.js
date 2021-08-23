@@ -6,7 +6,7 @@ function add(image, ...channels) {
     throw INVALID_IMAGE;
   }
 
-  const [width, height] = image.size();
+  const [width, height] = image.getDimensions();
 
   if (width !== this.width || height !== this.height) {
     throw size_incompatible(width, height, this.width, this.height);

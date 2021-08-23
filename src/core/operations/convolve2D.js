@@ -1,16 +1,16 @@
 const isFilter = require('../../utils/isFilter');
-const { invalid_kernel_size, invalid_kernel } = require('../../Errors');
+const { invalid_filter_shape, invalid_filter_size, invalid_2D_filter } = require('../../Errors');
 
 function convolve2D(filter, ...channels) {
   if (!isFilter(filter, 2)) {
-    throw invalid_kernel(filter);
+    throw invalid_2D_filter(filter);
   }
 
   const row = filter.length;
   const col = filter[0].length;
 
   if (row !== col) {
-    throw invalid_kernel_size(row, col);
+    throw invalid_filter_shape(row, col);
   }
 
   const width = this.width;
@@ -19,7 +19,7 @@ function convolve2D(filter, ...channels) {
   const filterSize = row;
 
   if (filterSize > filterMaxSize || filterSize % 2 !== 1) {
-    throw invalid_kernel_size(filterSize);
+    throw invalid_filter_size(filterSize);
   }
 
   const padSize = (filterSize - 1) / 2;
