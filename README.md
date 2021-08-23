@@ -419,3 +419,4 @@ const RGB = YIQ.YIQtoRGB(); // back to RGB
 - Support more image format (Currently only support jpeg)
 - Create a playground website to experience the library
 - Add more algorithm, such as scaling
+- Optimize implementations
