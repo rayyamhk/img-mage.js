@@ -236,21 +236,21 @@ We provide some common linear, non-linear, and frequency domain filters. Linear 
 
 | Name  | Argument(s) | Type | Remark |
 | ------------ | ------------ | ------------ | ------------ | 
-| BOX_FILTER | size | Linear | |
-| LAPLACIAN_45 | No | Linear | |
-| LAPLACIAN_90 | No | Linear | |
-| GAUSSIAN_1D | sigma | Linear| |
-| GAUSSIAN_2D | sigma | Linear | |
-|MAX_FILTER|size|Non-linear||
-|MIN_FILTER|size|Non-linear||
-|MEDIAN_FILTER|size|Non-linear||
-|ILPF| Cut-off|Frequency domain| Ideal low-pass|
-|GLPF| Cut-off|Frequency domain| Gaussian low-pass|
-|BLPF| Cut-off, order|Frequency domain| Butterworth low-pass|
-|IHPF| Cut-off |Frequency domain| Ideal high-pass|
-|GHPF| Cut-off |Frequency domain| Gaussian high-pass filter|
-|ILPF| Cut-off |Frequency domain| Ideal low-pass filter|
-|BHPF| Cut-off, order |Frequency domain| Butterworth high-pass filter|
+| BOX_FILTER | size | Linear ||
+| LAPLACIAN_45 | No | Linear ||
+| LAPLACIAN_90 | No | Linear ||
+| GAUSSIAN_1D | sigma | Linear||
+| GAUSSIAN_2D | sigma | Linear ||
+| MAX_FILTER | size | Non-linear ||
+| MIN_FILTER | size | Non-linear ||
+| MEDIAN_FILTER | size | Non-linear ||
+| ILPF | Cut-off | Frequency domain | Ideal low-pass |
+| GLPF | Cut-off | Frequency domain | Gaussian low-pass |
+| BLPF | Cut-off, order | Frequency domain | Butterworth low-pass |
+| IHPF | Cut-off | Frequency domain | Ideal high-pass |
+| GHPF | Cut-off | Frequency domain | Gaussian high-pass filter |
+| ILPF | Cut-off | Frequency domain | Ideal low-pass filter |
+| BHPF | Cut-off, order | Frequency domain | Butterworth high-pass filter |
 ```javascript
 const { BOX_FILTER, MEDIAN_FILTER, GHPF } = Image.CONSTANT;
 
