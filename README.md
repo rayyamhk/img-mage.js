@@ -72,11 +72,12 @@ img
 ### Example 3: Channel-wise Map
 We introduce a robust method called `map`, which enables pixel-wise manipulation. This method is designed for channel-wise processing, i.e. you can specify the index of the channels that you want to process to reduce execution time.
 ```javascript
+const height = img.getDimensions()[1];
 /**
  * Channel is an 2D array,
  * The callback maps each pixel to a new pixel.
  */
-const cb = (pixel, i, j, k, channel) => channel[h - 1 - i][j];
+const cb = (pixel, i, j, k, channel) => channel[height - 1 - i][j];
 
 img.map(cb); // reflect the image along x-direction
 img.map(cb, 0); // only reflect the red channel
@@ -120,8 +121,8 @@ const maxFilter = (pixel, i, j, k, channel) => {
   let max = Number.NEGATIVE_INFINITY;
   for (let x = -1; x <= 1; x++) {
     for (let y = -1; y <= 1; y++) {
-      const posX = i - 1;
-      const posY = j - 1;
+      const posX = i - x;
+      const posY = j - y;
       if (posX < 0 || posX >= h || posY < 0 || posY >= w) {
         continue;
       }
