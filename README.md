@@ -12,32 +12,33 @@ npm install --save img-mage
 - Provide highly flexible *map* function for **pixel-wise** manipulation
 - Support **channel-wise** operations to reduce execution time
 - Support node.js and browser environments
-- Currently only support jpeg format (Contribution is welcome)
-![](https://i.imgur.com/yoD92k3.png)
+- Currently only support **jpeg** format!! (Contribution is welcome)
+![Demo](https://i.imgur.com/yoD92k3.png)
 
 ## Table of content
 - [Image](#image)
-- [map](#map)
-- [fourier & inverse fourier](#fourier)
-- [fourierMap](#fourierMap)
-- [fourierSpectrum & fourierPhase](#fourierSpectrum)
-- [filter](#filter)
-- [detectCorners](#detectCorners)
-- [crop](#crop)
-- [rotate](#rotate)
-- [pad](#pad)
-- [reflectX & reflectY](#reflectX)
-- [negative](#negative)
-- [logTransform](#logTransform)
-- [powerLawTransform](#powerLawTransform)
-- [clip](#clip)
-- [rescale](#rescale)
-- [blur](#blur)
-- [sharpen](#sharpen)
-- [abs](#abs)
-- [add](#add)
-- [subtract](#subtract)
-- [multiply](#multiply)
+- [map](#mapcb-channels)
+- [fourier & inverse fourier](#fourierchannels)
+- [fourierMap](#fouriermapcb-channels)
+- [fourierSpectrum & fourierPhase](#fourierspectrum)
+- [filter](#filtertype-options)
+- [convolve1D & convolve2D](#convolve1dfilter-direction-channels)
+- [detectCorners](#detectcornerssigma-threshold)
+- [crop](#cropx-y-w-h)
+- [rotate](#rotaterotation)
+- [pad](#padx-y)
+- [reflectX & reflectY](#reflectxchannels)
+- [negative](#negativechannels)
+- [logTransform](#logtransformchannels)
+- [powerLawTransform](#powerlawtransformgamma-channels)
+- [clip](#clipchannels)
+- [rescale](#rescalechannels)
+- [blur](#blursigma-channels)
+- [sharpen](#sharpensigma-channels)
+- [abs](#abschannels)
+- [add](#addimage-channels)
+- [subtract](#subtractimage-channels)
+- [multiply](#multiplyimage-channels)
 - [RGBtoYIQ & YIQtoRGB](#rgbtoyiq)
 
 ## How to use
@@ -99,12 +100,12 @@ img
 ```
 
 ### Example 5: Custom filters
-It is extremely easy to implement a custom filter. If the filter is linear, you can implement it as an 2D array. If the filter is non-linear, e.g. Median filter, you can implement it as a map callback.
+It is extremely easy to implement a custom filter. If the filter is linear, you can implement it as an 2D array. If the filter is non-linear, e.g. Median filter, you can implement it as a map callback. If the filter is for frequency domain, implement it as a fourierMap callback [Example](#example-ideal-low-pass-filter).
 ```javascript
 const derivativeFilter2D = [
-	[1, 0, -1],
-	[2, 0, -2],
-	[1, 0, -1],
+  [1, 0, -1],
+  [2, 0, -2],
+  [1, 0, -1],
 ];
 img.convolve2D(derivativeFilter);
 
@@ -113,23 +114,25 @@ img.convolve1D(derivativeFilter1D, 'x');
 
 // 3x3 max filter
 const maxFilter = (pixel, i, j, k, channel) => {
-	const h = channel.length;
-	const w = channel[0].length;
+  const h = channel.length;
+  const w = channel[0].length;
 
-	let max = Number.NEGATIVE_INFINITY;
-	for (let x = -1; x <= 1; x++) {
-		for (let y = -1; y <= 1; y++) {
-			const posX = i - 1;
-			const posY = j - 1;
-			if (posX < 0 || posX >= h || posY < 0 || posY >= w) {
-				continue;
-			}
-			max = Math.max(max, channel[posX][posY]);
-		}
-	}
-	return max;
+  let max = Number.NEGATIVE_INFINITY;
+  for (let x = -1; x <= 1; x++) {
+    for (let y = -1; y <= 1; y++) {
+      const posX = i - 1;
+      const posY = j - 1;
+      if (posX < 0 || posX >= h || posY < 0 || posY >= w) {
+        continue;
+      }
+      max = Math.max(max, channel[posX][posY]);
+    }
+  }
+  return max;
 }
 img.map(maxFilter);
+
+// 
 ```
 
 ## API
@@ -192,7 +195,7 @@ img
 ```
 
 ### fourierMap(cb, ...channels)
-Similar to map in spatial domain, fourierMap is the map in frequency domain. The only different is that the callback takes centerX and centerY as additional arguments, which are the center coordinate of the transformation. **Note that all pixels in frequency domain are complex number. We provide a library for you to manipulate complex numbers**
+Similar to map in spatial domain, fourierMap is the map in frequency domain. The only different is that the callback takes centerX and centerY as additional arguments, which are the center coordinate of the transformation. **Note that all pixels in frequency domain are complex number. We provide a library [Complex.js](https://github.com/rayyamhk/Complex.js) for you to manipulate complex numbers**
 
 #### Example: Ideal Low-Pass Filter
 ```javascript
@@ -232,7 +235,7 @@ We provide some common linear, non-linear, and frequency domain filters. Linear 
 
 | Name  | Argument(s) | Type | Remark |
 | ------------ | ------------ | ------------ | ------------ | 
-| BOX_FILTER | No | Linear | |
+| BOX_FILTER | size | Linear | |
 | LAPLACIAN_45 | No | Linear | |
 | LAPLACIAN_90 | No | Linear | |
 | GAUSSIAN_1D | sigma | Linear| |
@@ -309,7 +312,7 @@ img.rotate(-3); // equivalent
 ```
 
 ### pad(x, y)
-Add zero-padding to an image. The height and width of the resulting image is h + 2x and w + 2y respectively.
+Add zero-padding to an image. The height and width of the resulting image are h + 2x and w + 2y respectively.
 ```javascript
 img.pad(10); // 10px to 4 sides
 img.pad(10, 20); // 10px to top and bottom, 20px to left and right
@@ -420,3 +423,6 @@ const RGB = YIQ.YIQtoRGB(); // back to RGB
 - Create a playground website to experience the library
 - Add more algorithm, such as scaling
 - Optimize implementations
+
+## License
+MIT
