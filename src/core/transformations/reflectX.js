@@ -1,17 +1,9 @@
-const Image = require('../../Image');
-const generate = require('../../utils/generate');
-
-function reflectX() {
+function reflectX(...channels) {
   const h = this.height;
-  const w = this.width;
 
-  const newChannels = [];
-  for (let k = 0; k < this.channels.length; k++) {
-    const channel = this.channels[k];
-    newChannels.push(generate(w, h, (i, j) => channel[h - 1 - i][j]));
-  }
+  const cb = (pixel, i, j, k, channel) => channel[h - 1 - i][j];
 
-  return new Image()._fromChannels(newChannels, w, h, this);
+  return this.map(cb, ...channels);
 }
 
 module.exports = reflectX;

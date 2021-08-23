@@ -1,4 +1,5 @@
 const Image = require('../../Image');
+const generate = require('../../utils/generate');
 const isValidChannels = require('../../utils/isValidChannels');
 
 function fourierMap(cb, ...channels) {
@@ -19,15 +20,9 @@ function fourierMap(cb, ...channels) {
     }
 
     if (channels.includes(k)) {
-      const channel = [];
-      for (let i = 0; i < h; i++) {
-        const row = [];
-        for (let j = 0; j < w; j++) {
-          row.push(cb(fourierChannel[i][j], i, j, k, centerX, centerY, fourierChannel));
-        }
-        channel.push(row);
-      }
-      newFourierChannels.push(channel);
+      newFourierChannels.push(
+        generate(w, h, (i, j) => cb(fourierChannel[i][j], i, j, k, centerX, centerY, fourierChannel))
+      );
     } else {
       newFourierChannels.push(fourierChannel);
     }

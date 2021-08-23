@@ -1,6 +1,5 @@
 const getImageLoader = require('./utils/getImageLoader');
 const getImageSaver = require('./utils/getImageSaver');
-const constant = require('./core/constant');
 
 class Image {
   constructor() {
@@ -127,8 +126,9 @@ Image.prototype.inverseFourier = require('./core/operations/inverseFourier');
 Image.prototype.multiply = require('./core/operations/multiply');
 Image.prototype.subtract = require('./core/operations/subtract');
 
-// constants
-Image.CONSTANT = constant;
+// static
+Image.CONSTANT = require('./core/constant');
+Image.generate = require('./utils/generate');
 
 
 

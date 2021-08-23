@@ -1,7 +1,7 @@
 const Image = require('./src/Image');
-const Matrix = require('@rayyamhk/matrix');
+const Complex = require('@rayyamhk/complex');
 
 module.exports = {
   Image,
-  Matrix,
+  Complex,
 };

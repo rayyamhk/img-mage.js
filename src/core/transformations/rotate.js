@@ -15,7 +15,7 @@ function rotate(rotation) {
   if (rotation === -3 || rotation === 1) {
     for (let k = 0; k < this.channels.length; k++) {
       const channel = this.channels[k];
-      newChannels.push(generate(h, w, (i, j) => channel[row - 1 - j][i]));
+      newChannels.push(generate(h, w, (i, j) => channel[h - 1 - j][i]));
     }
     return new Image()._fromChannels(newChannels, h, w, this);
   }
@@ -24,7 +24,7 @@ function rotate(rotation) {
   if (rotation === 2 || rotation === -2) {
     for (let k = 0; k < this.channels.length; k++) {
       const channel = this.channels[k];
-      newChannels.push(generate(w, h, (i, j) => channel[row - 1 - i][col - 1 - j]));
+      newChannels.push(generate(w, h, (i, j) => channel[h - 1 - i][w - 1 - j]));
     }
     return new Image()._fromChannels(newChannels, w, h, this);
   }
@@ -32,7 +32,7 @@ function rotate(rotation) {
   // clockwise 270
   for (let k = 0; k < this.channels.length; k++) {
     const channel = this.channels[k];
-    newChannels.push(generate(h, w, (i, j) => channel[j][col - 1- i]));
+    newChannels.push(generate(h, w, (i, j) => channel[j][w - 1- i]));
   }
   return new Image()._fromChannels(newChannels, h, w, this);
 }

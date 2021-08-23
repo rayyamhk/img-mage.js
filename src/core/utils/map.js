@@ -1,4 +1,5 @@
 const Image = require('../../Image');
+const generate = require('../../utils/generate');
 const isValidChannels = require('../../utils/isValidChannels');
 
 function map(cb, ...channels) {
@@ -9,21 +10,14 @@ function map(cb, ...channels) {
   const newChannels = [];
 
   for (let k = 0; k < this.channels.length; k++) {
+    const channel = this.channels[k];
     if (channels.includes(k)) {
-      const channel = this.channels[k];
-
-      const newChannel = [];
-      for (let i = 0; i < h; i++) {
-        const row = [];
-        for (let j = 0; j < w; j++) {
-          row.push(cb(channel[i][j], i, j, k, channel));
-        }
-        newChannel.push(row);
-      }
-      newChannels.push(newChannel);
+      newChannels.push(
+        generate(w, h, (i, j) => cb(channel[i][j], i, j, k, channel))
+      );
 
     } else {
-      newChannels.push(this.channels[k]);
+      newChannels.push(channel);
     }
   }
 
