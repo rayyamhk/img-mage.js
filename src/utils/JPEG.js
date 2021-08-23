@@ -47,7 +47,7 @@ function saveJPEG(path, channels, width, height) {
     buffer[i] = R[count];
     buffer[i + 1] = G[count];
     buffer[i + 2] = B[count];
-    buffer[i + 4] = 0;
+    buffer[i + 3] = 1;
     count += 1;
   }
 
