@@ -424,6 +424,7 @@ const RGB = YIQ.YIQtoRGB(); // back to RGB
 - Create a playground website to experience the library
 - Add more algorithm, such as scaling
 - Optimize implementations
+- Add unit tests
 
 ## License
 MIT
