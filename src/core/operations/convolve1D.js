@@ -1,13 +1,13 @@
 const isFilter = require('../../utils/isFilter');
-const { invalid_kernel_size, invalid_kernel, invalid_argument } = require('../../Errors');
+const { invalid_filter_size, invalid_1D_filter, invalid_direction } = require('../../Errors');
 
 function convolve1D(filter, direction, ...channels) {
   if (!isFilter(filter, 1)) {
-    invalid_kernel(filter);
+    throw invalid_1D_filter(filter);
   }
 
   if (!direction || !['x', 'y'].includes(direction)) {
-    throw invalid_argument('direction', 'x or y', direction);
+    throw invalid_direction(direction);
   }
 
   const width = this.width;
@@ -16,7 +16,7 @@ function convolve1D(filter, direction, ...channels) {
   const filterSize = filter.length;
 
   if (filterSize > filterMaxSize || filterSize % 2 !== 1) {
-    throw invalid_kernel_size(filterSize);
+    throw invalid_filter_size(filterSize);
   }
 
   const padSize = (filterSize - 1) / 2;

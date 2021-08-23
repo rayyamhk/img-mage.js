@@ -1,5 +1,6 @@
 const getImageLoader = require('./utils/getImageLoader');
 const getImageSaver = require('./utils/getImageSaver');
+const { expect_nonnegative, overflow } = require('./Errors');
 
 class Image {
   constructor() {
@@ -12,16 +13,32 @@ class Image {
     this.fourierCenterY = null;
   }
 
-  size() {
-    return [this.width, this.height];
+  getDimensions() {
+    return [this.width, this.height, this.channels.length];
   }
 
   getBitDepth() {
     return this.bitDepth;
   }
 
-  channelsNumber() {
-    return this.channels.length;
+  getPixel(i, j) {
+    if ((!i && i !== 0) || typeof i !== 'number' || !Number.isInteger(i) || i < 0) {
+      throw expect_nonnegative(i);
+    }
+    if (i >= this.height) {
+      throw overflow(i, this.height);
+    }
+    if ((!j && j !== 0) || typeof j !== 'number' || !Number.isInteger(j) || j < 0) {
+      throw expect_nonnegative(j);
+    }
+    if (j >= this.width) {
+      throw overflow(j, this.width);
+    }
+    const pixel = [];
+    for (let k = 0; k < this.channels.length; k++) {
+      pixel.push(this.channels[k][i][j]);
+    }
+    return pixel;
   }
 
   load(path, option) {
@@ -42,9 +59,6 @@ class Image {
     this.height = height;
     this.bitDepth = bitDepth;
     this.channels = channels;
-    this.fourierChannels = [];
-    this.fourierCenterX = null;
-    this.fourierCenterY = null;
     this.ignoreAlpha = ignoreAlpha;
 
     return this;
@@ -96,8 +110,6 @@ Image.prototype.rescale = require('./core/utils/rescale');
 Image.prototype.RGBtoYIQ = require('./core/utils/RGBtoYIQ');
 Image.prototype.YIQtoRGB = require('./core/utils/YIQtoRGB');
 
-Image.filter = require('./core/utils/filter');
-
 // transformations
 Image.prototype.crop = require('./core/transformations/crop');
 Image.prototype.logTransform = require('./core/transformations/logTransform');
@@ -111,10 +123,7 @@ Image.prototype.rotate = require('./core/transformations/rotate');
 
 // enhancement
 Image.prototype.blur = require('./core/enhancements/blur');
-// Image.prototype.sharpen = require('./core/enhancements/sharpen');
-
-// restoration
-// Image.prototype.denoising = require('./core/denoising');
+Image.prototype.sharpen = require('./core/enhancements/sharpen');
 
 // operations
 Image.prototype.abs = require('./core/operations/abs');
@@ -129,9 +138,4 @@ Image.prototype.subtract = require('./core/operations/subtract');
 // static
 Image.CONSTANT = require('./core/constant');
 Image.generate = require('./utils/generate');
-
-
-
-
-
-// Image.property.addNoise = require('./core/addNoise);
+Image.filter = require('./core/utils/filter');

@@ -1,15 +1,15 @@
 const Image = require('../../Image');
 const isValidChannels = require('../../utils/isValidChannels');
-const { invalid_coordinate, INVALID_ARRAY } = require('../../Errors');
+const { invalid_point, invalid_array } = require('../../Errors');
 
 function plot(points, ...channels) {
   if (!points || !Array.isArray(points)) {
-    throw INVALID_ARRAY;
+    throw invalid_array(points);
   }
 
   for (let k = 0; k < points.length; k++) {
     if (!Array.isArray(points[k]) || points[k].length !== 2) {
-      throw invalid_coordinate(point);
+      throw invalid_point(point);
     }
   }
 

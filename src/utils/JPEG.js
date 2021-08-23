@@ -1,7 +1,7 @@
 const fs = require('fs');
 const Matrix = require('@rayyamhk/matrix');
 const jpeg = require('jpeg-js');
-const { INVALID_IMAGE } = require('../Errors')
+const { INVALID_RGB } = require('../Errors')
 
 function loadJPEG(path) {
   const buffer = fs.readFileSync(path);
@@ -33,7 +33,7 @@ function loadJPEG(path) {
 function saveJPEG(path, channels, width, height) {
   let [R, G, B] = channels;
   if (!R || !G || !B) {
-    throw INVALID_IMAGE;
+    throw INVALID_RGB;
   }
 
   R = new Matrix(R).flatten();
