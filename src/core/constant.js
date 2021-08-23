@@ -4,7 +4,7 @@ module.exports = {
   LAPLACIAN_45: 2,
   GAUSSIAN_2D: 3,
   GAUSSIAN_1D: 4,
-  // MEDIAN_FILTER: 11,
+  MEDIAN_FILTER: 11,
   MAX_FILTER: 12,
   MIN_FILTER: 13,
   ILPF: 5,

@@ -48,8 +48,8 @@ function drawCross(channel, intensity, point, width, height) {
   x = Math.round(x);
   y = Math.round(y);
 
-  for (let i = -3; i <= 3; i++) {
-    for (let j = -3; j <= 3; j++) {
+  for (let i = -4; i <= 4; i++) {
+    for (let j = -4; j <= 4; j++) {
       if (x - i >= 0 && x - i < height && y - j >= 0 && y - j < width) {
         channel[x - i][y - j] = intensity;
       }

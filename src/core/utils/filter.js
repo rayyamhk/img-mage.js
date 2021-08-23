@@ -88,6 +88,35 @@ function filter(type, ...options) {
         return min;
       }
     }
+    case constant.MEDIAN_FILTER: {
+      const size = options[0] || 3;
+      if (typeof size !== 'number' || size % 2 !== 1) {
+        throw invalid_filter_size(size);
+      }
+      const padSize = (size - 1) / 2;
+      return (pixel, i, j, k, channel) => {
+        const h = channel.length;
+        const w = channel[0].length;
+
+        const pixels = [];
+        for (let x = -padSize; x <= padSize; x++) {
+          for (let y = -padSize; y <= padSize; y++) {
+            const posX = i - x;
+            const posY = j - y;
+            if (posX < 0 || posX >= h || posY < 0 || posY >= w) {
+              continue;
+            }
+            pixels.push(channel[posX][posY]);
+          }
+        }
+        pixels.sort((a, b) => a - b);
+        const len = pixels.length;
+        if (len % 2 === 1) {
+          return pixels[(len - 1) / 2];
+        }
+        return 0.5 * pixels[len / 2] + 0.5 * pixels[len / 2 - 1];
+      }
+    }
     case constant.ILPF: {
       const cutoff = options[0] || 10;
       return (pixel, i, j, k, centerX, centerY) => {

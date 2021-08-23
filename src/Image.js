@@ -21,6 +21,10 @@ class Image {
     return this.bitDepth;
   }
 
+  getChannel(k) {
+    return this.channels[k];
+  }
+
   getPixel(i, j) {
     if ((!i && i !== 0) || typeof i !== 'number' || !Number.isInteger(i) || i < 0) {
       throw expect_nonnegative(i);
@@ -119,6 +123,7 @@ Image.prototype.powerLawTransform = require('./core/transformations/powerLawTran
 Image.prototype.reflectX = require('./core/transformations/reflectX');
 Image.prototype.reflectY = require('./core/transformations/reflectY');
 Image.prototype.rotate = require('./core/transformations/rotate');
+
 // Image.prototype.scale = require('./core/transformations/scale');
 
 // enhancement
