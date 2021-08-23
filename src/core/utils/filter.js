@@ -1,11 +1,15 @@
 const Matrix = require('@rayyamhk/matrix');
 const Complex = require('@rayyamhk/complex');
 const constant = require('../constant');
+const { invalid_kernel_size, expect_positive } = require('../../Errors');
 
 function filter(type, ...options) {
   switch(type) {
     case constant.BOX_FILTER: {
       const size = options[0] || 3;
+      if (typeof size !== 'number' || size % 2 !== 1) {
+        throw invalid_kernel_size(size);
+      }
       return boxFilter(size);
     }
     case constant.LAPLACIAN_45: {
@@ -24,11 +28,65 @@ function filter(type, ...options) {
     }
     case constant.GAUSSIAN_1D: {
       const sigma = options[0] || 0.5;
+      if (typeof sigma !== 'number' || sigma <= 0) {
+        throw expect_positive(sigma);
+      }
       return gaussianFilter1D(sigma);
     }
     case constant.GAUSSIAN_2D: {
       const sigma = options[0] || 0.5;
+      if (typeof sigma !== 'number' || sigma <= 0) {
+        throw expect_positive(sigma);
+      }
       return gaussianFilter2D(sigma);
+    }
+    case constant.MAX_FILTER: {
+      const size = options[0] || 3;
+      if (typeof size !== 'number' || size % 2 !== 1) {
+        throw invalid_kernel_size(size);
+      }
+      const padSize = (size - 1) / 2;
+      return (pixel, i, j, k, channel) => {
+        const h = channel.length;
+        const w = channel[0].length;
+
+        let max = Number.NEGATIVE_INFINITY;
+        for (let x = -padSize; x <= padSize; x++) {
+          for (let y = -padSize; y <= padSize; y++) {
+            const posX = i - x;
+            const posY = j - y;
+            if (posX < 0 || posX >= h || posY < 0 || posY >= w) {
+              continue;
+            }
+            max = Math.max(channel[posX][posY], max);
+          }
+        }
+        return max;
+      }
+    }
+    case constant.MIN_FILTER: {
+      const size = options[0] || 3;
+      if (typeof size !== 'number' || size % 2 !== 1) {
+        throw invalid_kernel_size(size);
+      }
+      const padSize = (size - 1) / 2;
+      return (pixel, i, j, k, channel) => {
+        const h = channel.length;
+        const w = channel[0].length;
+
+        let min = Number.POSITIVE_INFINITY;
+        for (let x = -padSize; x <= padSize; x++) {
+          for (let y = -padSize; y <= padSize; y++) {
+            const posX = i - x;
+            const posY = j - y;
+            if (posX < 0 || posX >= h || posY < 0 || posY >= w) {
+              continue;
+            }
+            min = Math.min(channel[posX][posY], min);
+          }
+        }
+        return min;
+      }
     }
     case constant.ILPF: {
       const cutoff = options[0] || 10;
