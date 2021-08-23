@@ -143,7 +143,7 @@ img.map(maxFilter);
 const { Image } = require('img-mage');
 
 const img = new Image().load('rgb.jpg');
-const [width, height, depth] = img.DiDimensions();
+const [width, height, depth] = img.getDimensions();
 const bitDepth = img.getBitDepth();
 const R = img.getChannel(0);
 const [r, g, b] = img.getPixel(10, 10);
